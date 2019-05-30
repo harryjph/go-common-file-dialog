@@ -3,7 +3,6 @@ package cfd
 import (
 	"github.com/go-ole/go-ole"
 	"github.com/go-ole/go-ole/oleutil"
-	"syscall"
 	"unsafe"
 )
 
@@ -35,13 +34,5 @@ func newIFileOpenDialog() (*iFileOpenDialog, error) {
 }
 
 func (fileOpenDialog *iFileOpenDialog) Show() error {
-	ret, _, _ := syscall.Syscall(fileOpenDialog.vtbl.Show,
-		1,
-		uintptr(unsafe.Pointer(fileOpenDialog)),
-		0,
-		0)
-	if ret != 0 {
-		return ole.NewError(ret)
-	}
-	return nil
+	return fileOpenDialog.vtbl.show(unsafe.Pointer(fileOpenDialog))
 }
