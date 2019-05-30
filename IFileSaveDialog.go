@@ -35,3 +35,7 @@ func newIFileSaveDialog() (*iFileSaveDialog, error) {
 func (fileSaveDialog *iFileSaveDialog) Show() error {
 	return fileSaveDialog.vtbl.show(unsafe.Pointer(fileSaveDialog))
 }
+
+func (fileSaveDialog *iFileSaveDialog) Close() error {
+	return fileSaveDialog.vtbl.close(unsafe.Pointer(fileSaveDialog))
+}

@@ -32,3 +32,8 @@ func newIFileOpenDialog() (*iFileOpenDialog, error) {
 func (fileOpenDialog *iFileOpenDialog) Show() error {
 	return fileOpenDialog.vtbl.show(unsafe.Pointer(fileOpenDialog))
 }
+
+func (fileOpenDialog *iFileOpenDialog) Close() error {
+	println("Close!")
+	return fileOpenDialog.vtbl.close(unsafe.Pointer(fileOpenDialog))
+}
