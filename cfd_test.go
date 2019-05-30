@@ -2,7 +2,6 @@ package cfd
 
 import (
 	"testing"
-	"time"
 )
 
 func TestOpen(t *testing.T) {
@@ -10,15 +9,20 @@ func TestOpen(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	go func() {
+	/*go func() {
 		time.Sleep(1 * time.Second)
 		if err := openDialog.Close(); err != nil {
 			t.Fatal(err)
 		}
-	}()
+	}()*/
 	if err := openDialog.Show(); err != nil {
 		t.Fatal(err)
 	}
+	result, err := openDialog.GetResult()
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Logf("Got result: %s", result)
 }
 
 func TestSave(t *testing.T) {
@@ -26,12 +30,12 @@ func TestSave(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	go func() {
+	/*go func() {
 		time.Sleep(1 * time.Second)
 		if err := saveDialog.Close(); err != nil {
 			t.Fatal(err)
 		}
-	}()
+	}()*/
 	if err := saveDialog.Show(); err != nil {
 		t.Fatal(err)
 	}

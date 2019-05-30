@@ -6,6 +6,19 @@ type iUnknownVtbl struct {
 	Release        uintptr
 }
 
+type iShellItem struct { // TODO move this and its logic into separate file?
+	vtbl *iShellItemVtbl
+}
+
+type iShellItemVtbl struct {
+	iUnknownVtbl
+	BindToHandler  uintptr
+	GetParent      uintptr
+	GetDisplayName uintptr // func (sigdnName SIGDN, ppszName *LPWSTR) HRESULT
+	GetAttributes  uintptr
+	Compare        uintptr
+}
+
 type iModalWindowVtbl struct {
 	iUnknownVtbl
 	Show uintptr // func (hwndOwner HWND) HRESULT
@@ -29,7 +42,7 @@ type iFileDialogVtbl struct {
 	SetTitle            uintptr
 	SetOkButtonLabel    uintptr
 	SetFileNameLabel    uintptr
-	GetResult           uintptr
+	GetResult           uintptr // func (ppsi **IShellItem) HRESULT
 	AddPlace            uintptr
 	SetDefaultExtension uintptr
 	Close               uintptr // func (hr HRESULT) HRESULT

@@ -34,6 +34,13 @@ func (fileOpenDialog *iFileOpenDialog) Show() error {
 }
 
 func (fileOpenDialog *iFileOpenDialog) Close() error {
-	println("Close!")
 	return fileOpenDialog.vtbl.close(unsafe.Pointer(fileOpenDialog))
+}
+
+func (fileOpenDialog *iFileOpenDialog) GetResult() (string, error) {
+	shellItem, err := fileOpenDialog.vtbl.getResult(unsafe.Pointer(fileOpenDialog))
+	if err != nil {
+		return "", err
+	}
+	return shellItem.vtbl.getDisplayName(unsafe.Pointer(shellItem))
 }

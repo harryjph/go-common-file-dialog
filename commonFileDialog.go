@@ -18,7 +18,7 @@ type Dialog interface {
 
 type OpenFileDialog interface {
 	Dialog
-	GetResult() string // TODO more methods
+	//GetPath() string // TODO more methods
 }
 
 type SaveFileDialog interface {
@@ -26,10 +26,10 @@ type SaveFileDialog interface {
 	// TODO more methods
 }
 
-func NewSaveFileDialog() OpenFileDialog {
-	return nil // TODO
+func NewSaveFileDialog() (OpenFileDialog, error) {
+	return newIFileOpenDialog() // TODO
 }
 
-func NewOpenFileDialog() OpenFileDialog {
-	return nil // TODO
+func NewOpenFileDialog() (SaveFileDialog, error) {
+	return newIFileSaveDialog() // TODO
 }
