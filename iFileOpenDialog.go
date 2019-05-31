@@ -61,11 +61,15 @@ func (fileOpenDialog *iFileOpenDialog) SetDefaultFolder(defaultFolderPath string
 	return fileOpenDialog.vtbl.setDefaultFolder(unsafe.Pointer(fileOpenDialog), defaultFolderPath)
 }
 
-func (fileOpenDialog *iFileOpenDialog) SetFolder(defaultFolderPath string) error {
+func (fileOpenDialog *iFileOpenDialog) SetInitialFolder(defaultFolderPath string) error {
 	return fileOpenDialog.vtbl.setFolder(unsafe.Pointer(fileOpenDialog), defaultFolderPath)
 }
 
 func (fileOpenDialog *iFileOpenDialog) SetFileFilter(defaultFolderPath string) error { // TODO
+	return nil
+}
+
+func (fileOpenDialog *iFileOpenDialog) SetRole(role string) error { // TODO
 	return nil
 }
 

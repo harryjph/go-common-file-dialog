@@ -2,7 +2,7 @@
 
 package cfd
 
-func NewOpenFileDialog(dialogTitle, defaultFolder, fileFilter string) (Dialog, error) {
+func NewOpenFileDialog(config DialogConfig) (Dialog, error) {
 	if !initialized {
 		if err := Initialize(); err != nil {
 			return nil, err
@@ -13,26 +13,14 @@ func NewOpenFileDialog(dialogTitle, defaultFolder, fileFilter string) (Dialog, e
 	if err != nil {
 		return nil, err
 	}
-	err = openDialog.SetTitle(dialogTitle)
-	if err != nil {
-		return nil, err
-	}
-	err = openDialog.SetDefaultFolder(defaultFolder)
-	if err != nil {
-		return nil, err
-	}
-	err = openDialog.setPickFolders(false)
-	if err != nil {
-		return nil, err
-	}
-	err = openDialog.SetFileFilter(fileFilter)
+	err = config.apply(openDialog)
 	if err != nil {
 		return nil, err
 	}
 	return openDialog, nil
 }
 
-func NewPickFolderDialog(dialogTitle, defaultFolder string) (Dialog, error) {
+func NewPickFolderDialog(config DialogConfig) (Dialog, error) {
 	if !initialized {
 		if err := Initialize(); err != nil {
 			return nil, err
@@ -43,11 +31,7 @@ func NewPickFolderDialog(dialogTitle, defaultFolder string) (Dialog, error) {
 	if err != nil {
 		return nil, err
 	}
-	err = openDialog.SetTitle(dialogTitle)
-	if err != nil {
-		return nil, err
-	}
-	err = openDialog.SetDefaultFolder(defaultFolder)
+	err = config.apply(openDialog)
 	if err != nil {
 		return nil, err
 	}
@@ -58,7 +42,7 @@ func NewPickFolderDialog(dialogTitle, defaultFolder string) (Dialog, error) {
 	return openDialog, nil
 }
 
-func NewSaveFileDialog(dialogTitle, defaultFolder, fileFilter string) (Dialog, error) {
+func NewSaveFileDialog(config DialogConfig) (Dialog, error) {
 	if !initialized {
 		if err := Initialize(); err != nil {
 			return nil, err
@@ -69,15 +53,7 @@ func NewSaveFileDialog(dialogTitle, defaultFolder, fileFilter string) (Dialog, e
 	if err != nil {
 		return nil, err
 	}
-	err = saveDialog.SetTitle(dialogTitle)
-	if err != nil {
-		return nil, err
-	}
-	err = saveDialog.SetDefaultFolder(defaultFolder)
-	if err != nil {
-		return nil, err
-	}
-	err = saveDialog.SetFileFilter(fileFilter)
+	err = config.apply(saveDialog)
 	if err != nil {
 		return nil, err
 	}
