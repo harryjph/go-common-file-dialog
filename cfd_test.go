@@ -15,6 +15,9 @@ func TestOpen(t *testing.T) {
 			t.Fatal(err)
 		}
 	}()*/
+	if err := openDialog.SetDefaultFolder("C:\\Users\\Harry"); err != nil {
+		t.Fatal(err)
+	}
 	if err := openDialog.Show(); err != nil {
 		t.Fatal(err)
 	}
@@ -36,6 +39,9 @@ func TestSave(t *testing.T) {
 			t.Fatal(err)
 		}
 	}()*/
+	if err := saveDialog.SetDefaultFolder("C:\\Users\\Harry"); err != nil {
+		t.Fatal(err)
+	}
 	if err := saveDialog.Show(); err != nil {
 		t.Fatal(err)
 	}

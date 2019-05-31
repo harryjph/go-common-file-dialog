@@ -14,6 +14,7 @@ func init() {
 type Dialog interface {
 	Show() error
 	Close() error
+	SetDefaultFolder(defaultFolder string) error
 	GetResult() (string, error)
 	Release() error
 }

@@ -44,3 +44,7 @@ func (fileOpenDialog *iFileOpenDialog) GetResult() (string, error) {
 func (fileOpenDialog *iFileOpenDialog) Release() error {
 	return fileOpenDialog.vtbl.release(unsafe.Pointer(fileOpenDialog))
 }
+
+func (fileOpenDialog *iFileOpenDialog) SetDefaultFolder(defaultFolderPath string) error {
+	return fileOpenDialog.vtbl.setDefaultFolder(unsafe.Pointer(fileOpenDialog), defaultFolderPath)
+}

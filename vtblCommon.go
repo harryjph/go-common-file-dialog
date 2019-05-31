@@ -20,7 +20,7 @@ type iFileDialogVtbl struct {
 	Unadvise            uintptr
 	SetOptions          uintptr
 	GetOptions          uintptr
-	SetDefaultFolder    uintptr
+	SetDefaultFolder    uintptr // func (psi *IShellItem) HRESULT
 	SetFolder           uintptr
 	GetFolder           uintptr
 	GetCurrentSelection uintptr

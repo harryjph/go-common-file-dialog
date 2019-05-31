@@ -24,9 +24,22 @@ func (vtbl *iUnknownVtbl) release(objPtr unsafe.Pointer) error {
 
 func (vtbl *iModalWindowVtbl) show(objPtr unsafe.Pointer) error {
 	ret, _, _ := syscall.Syscall(vtbl.Show,
-		1,
+		1, // First argument is owner hWnd, we are just passing null
 		uintptr(objPtr),
 		0,
+		0)
+	return hresultToError(ret)
+}
+
+func (vtbl *iFileDialogVtbl) setDefaultFolder(objPtr unsafe.Pointer, path string) error {
+	shellItem, err := newIShellItem(path)
+	if err != nil {
+		return err
+	}
+	ret, _, _ := syscall.Syscall(vtbl.SetDefaultFolder,
+		1,
+		uintptr(objPtr),
+		uintptr(unsafe.Pointer(shellItem)),
 		0)
 	return hresultToError(ret)
 }

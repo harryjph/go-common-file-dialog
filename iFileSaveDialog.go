@@ -47,3 +47,7 @@ func (fileSaveDialog *iFileSaveDialog) GetResult() (string, error) {
 func (fileSaveDialog *iFileSaveDialog) Release() error {
 	return fileSaveDialog.vtbl.release(unsafe.Pointer(fileSaveDialog))
 }
+
+func (fileSaveDialog *iFileSaveDialog) SetDefaultFolder(defaultFolderPath string) error {
+	return fileSaveDialog.vtbl.setDefaultFolder(unsafe.Pointer(fileSaveDialog), defaultFolderPath)
+}

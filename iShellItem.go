@@ -6,6 +6,22 @@ import (
 	"unsafe"
 )
 
+const (
+	iidShellItemGUID = "{43826d1e-e718-42ee-bc55-a1e261c37bfe}"
+)
+
+var (
+	shell32                         *syscall.LazyDLL
+	procSHCreateItemFromParsingName *syscall.LazyProc
+	iidShellItem                    *ole.GUID
+)
+
+func init() {
+	shell32 = syscall.NewLazyDLL("Shell32.dll")
+	procSHCreateItemFromParsingName = shell32.NewProc("SHCreateItemFromParsingName")
+	iidShellItem, _ = ole.IIDFromString(iidShellItemGUID) // TODO handle error
+}
+
 type iShellItem struct {
 	vtbl *iShellItemVtbl
 }
@@ -17,6 +33,17 @@ type iShellItemVtbl struct {
 	GetDisplayName uintptr // func (sigdnName SIGDN, ppszName *LPWSTR) HRESULT
 	GetAttributes  uintptr
 	Compare        uintptr
+}
+
+func newIShellItem(path string) (*iShellItem, error) {
+	var shellItem *iShellItem
+	pathPtr := ole.SysAllocString(path)
+	ret, _, _ := procSHCreateItemFromParsingName.Call(
+		uintptr(unsafe.Pointer(pathPtr)),
+		0,
+		uintptr(unsafe.Pointer(iidShellItem)),
+		uintptr(unsafe.Pointer(shellItem)))
+	return shellItem, hresultToError(ret)
 }
 
 func (vtbl *iShellItemVtbl) getDisplayName(objPtr unsafe.Pointer) (string, error) {
