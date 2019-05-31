@@ -28,7 +28,7 @@ func (config *DialogConfig) apply(dialog Dialog) error {
 			return err
 		}
 	}
-	if config.FileFilter != "" {
+	if config.FileFilter != nil && len(config.FileFilter) > 0 {
 		err = dialog.SetFileFilter(config.FileFilter)
 		if err != nil {
 			return err

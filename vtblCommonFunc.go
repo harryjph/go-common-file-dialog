@@ -33,6 +33,25 @@ func (vtbl *iModalWindowVtbl) show(objPtr unsafe.Pointer) error {
 	return hresultToError(ret)
 }
 
+func (vtbl *iFileDialogVtbl) setFileTypes(objPtr unsafe.Pointer, filters []FileFilter) error {
+	cFileTypes := len(filters)
+	comDlgFilterSpecs := make([]comDlgFilterSpec, cFileTypes)
+	for i := 0; i < cFileTypes; i++ {
+		filter := filters[i]
+		comDlgFilterSpecs[i] = comDlgFilterSpec{
+			pszName: ole.SysAllocString(filter.DisplayName),
+			pszSpec: ole.SysAllocString(filter.Pattern),
+		}
+	}
+	ret, _, _ := syscall.Syscall(vtbl.SetFileTypes,
+		2,
+		uintptr(objPtr),
+		uintptr(cFileTypes),
+		uintptr(unsafe.Pointer(&comDlgFilterSpecs[0])))
+	// TODO we need to CoTaskMemFree on everything we just assigned (in the array)
+	return hresultToError(ret)
+}
+
 // Options are:
 // FOS_OVERWRITEPROMPT = 0x2,
 // FOS_STRICTFILETYPES = 0x4,

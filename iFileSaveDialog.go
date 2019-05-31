@@ -69,8 +69,8 @@ func (fileSaveDialog *iFileSaveDialog) SetInitialFolder(defaultFolderPath string
 	return fileSaveDialog.vtbl.setFolder(unsafe.Pointer(fileSaveDialog), defaultFolderPath)
 }
 
-func (fileSaveDialog *iFileSaveDialog) SetFileFilter(defaultFolderPath string) error { // TODO
-	return nil
+func (fileSaveDialog *iFileSaveDialog) SetFileFilter(filter []FileFilter) error {
+	return fileSaveDialog.vtbl.setFileTypes(unsafe.Pointer(fileSaveDialog), filter)
 }
 
 func (fileSaveDialog *iFileSaveDialog) SetRole(role string) error {

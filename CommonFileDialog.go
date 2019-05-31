@@ -11,6 +11,13 @@ func UnInitialize() {
 	comUnInitialize()
 }
 
+type FileFilter struct {
+	// The display name of the filter (That is shown to the user)
+	DisplayName string
+	// The filter pattern. Eg. "*.txt;*.png" to select all txt and png files, "*.*" to select any files, etc.
+	Pattern string
+}
+
 type DialogConfig struct {
 	// The title of the dialog
 	Title string
@@ -27,11 +34,14 @@ type DialogConfig struct {
 	// If this is not empty, it will override the "default folder" behaviour and
 	// the dialog will always open to this folder.
 	InitialFolder string
-	// The file filter, in the format TODO
-	FileFilter string
+	// The file filters that restrict which types of files the dialog is able to choose.
+	// Ignored by Folder Picker.
+	FileFilter []FileFilter
 }
 
-type Dialog interface {
+// TODO multi picker
+
+type Dialog interface { // TODO setDefaultExtension?
 	Show() error
 	ShowAndGet() (string, error)
 	Close() error // TODO does this even work?
@@ -39,7 +49,7 @@ type Dialog interface {
 	SetRole(role string) error
 	SetDefaultFolder(defaultFolder string) error
 	SetInitialFolder(folder string) error
-	SetFileFilter(fileFilter string) error
+	SetFileFilter(fileFilter []FileFilter) error
 	GetResult() (string, error)
 	Release() error
 }

@@ -10,9 +10,14 @@ func TestOpen(t *testing.T) {
 	Initialize()
 	defer UnInitialize()
 	openDialog, err := NewOpenFileDialog(DialogConfig{
-		Title:      "Test Open",
-		Role:       "TestOpen",
-		FileFilter: "Text Files (*.txt)|*.txt",
+		Title: "Test Open",
+		Role:  "TestOpen",
+		FileFilter: []FileFilter{
+			{
+				DisplayName: "Text Files (*.txt)",
+				Pattern:     "*.txt",
+			},
+		},
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -51,9 +56,14 @@ func TestSave(t *testing.T) {
 	Initialize()
 	defer UnInitialize()
 	saveDialog, err := NewSaveFileDialog(DialogConfig{
-		Title:      "Test Save",
-		Role:       "TestSave",
-		FileFilter: "Text Files (*.txt)|*.txt",
+		Title: "Test Save",
+		Role:  "TestSave",
+		FileFilter: []FileFilter{
+			{
+				DisplayName: "Text Files (*.txt)",
+				Pattern:     "*.txt",
+			},
+		},
 	})
 	if err != nil {
 		t.Fatal(err)

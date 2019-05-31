@@ -2,6 +2,11 @@
 
 package cfd
 
+type comDlgFilterSpec struct {
+	pszName *int16
+	pszSpec *int16
+}
+
 type iUnknownVtbl struct {
 	QueryInterface uintptr
 	AddRef         uintptr
@@ -15,7 +20,7 @@ type iModalWindowVtbl struct {
 
 type iFileDialogVtbl struct {
 	iModalWindowVtbl
-	SetFileTypes        uintptr
+	SetFileTypes        uintptr // func (cFileTypes UINT, rgFilterSpec *COMDLG_FILTERSPEC) HRESULT
 	SetFileTypeIndex    uintptr
 	GetFileTypeIndex    uintptr
 	Advise              uintptr
