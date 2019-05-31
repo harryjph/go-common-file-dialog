@@ -39,3 +39,11 @@ func (fileSaveDialog *iFileSaveDialog) Show() error {
 func (fileSaveDialog *iFileSaveDialog) Close() error {
 	return fileSaveDialog.vtbl.close(unsafe.Pointer(fileSaveDialog))
 }
+
+func (fileSaveDialog *iFileSaveDialog) GetResult() (string, error) {
+	shellItem, err := fileSaveDialog.vtbl.getResult(unsafe.Pointer(fileSaveDialog))
+	if err != nil {
+		return "", err
+	}
+	return shellItem.vtbl.getDisplayName(unsafe.Pointer(shellItem))
+}

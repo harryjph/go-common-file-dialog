@@ -39,4 +39,9 @@ func TestSave(t *testing.T) {
 	if err := saveDialog.Show(); err != nil {
 		t.Fatal(err)
 	}
+	result, err := saveDialog.GetResult()
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Logf("Got result: %s", result)
 }
