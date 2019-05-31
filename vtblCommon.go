@@ -26,7 +26,7 @@ type iFileDialogVtbl struct {
 	GetCurrentSelection uintptr
 	SetFileName         uintptr
 	GetFileName         uintptr
-	SetTitle            uintptr
+	SetTitle            uintptr // func(pszTitle LPCWSTR) HRESULT
 	SetOkButtonLabel    uintptr
 	SetFileNameLabel    uintptr
 	GetResult           uintptr // func (ppsi **IShellItem) HRESULT

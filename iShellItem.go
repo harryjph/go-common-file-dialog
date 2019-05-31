@@ -37,7 +37,7 @@ type iShellItemVtbl struct {
 
 func newIShellItem(path string) (*iShellItem, error) {
 	var shellItem *iShellItem
-	pathPtr := ole.SysAllocString(path)
+	pathPtr := ole.SysAllocString(path) // TODO do we need to CoTaskMemFree?
 	ret, _, _ := procSHCreateItemFromParsingName.Call(
 		uintptr(unsafe.Pointer(pathPtr)),
 		0,
@@ -56,6 +56,6 @@ func (vtbl *iShellItemVtbl) getDisplayName(objPtr unsafe.Pointer) (string, error
 	if ret != 0 {
 		return "", ole.NewError(ret)
 	}
-	// TODO CoTaskMemFree
+	// TODO do we need to CoTaskMemFree ptr?
 	return ole.LpOleStrToString(ptr), nil
 }

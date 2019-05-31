@@ -2,87 +2,41 @@ package cfdutil
 
 import "github.com/harry1453/go-common-file-dialog"
 
-func ShowOpenFileDialog(dialogTitle /*TODO*/, defaultFolder, typeFilter /*TODO*/ string) (string, error) {
+func ShowOpenFileDialog(dialogTitle, defaultFolder, typeFilter string) (string, error) {
 	if err := cfd.Initialize(); err != nil {
 		return "", nil
 	}
 	defer cfd.UnInitialize()
 
-	if openDialog, err := cfd.NewOpenFileDialog(); err == nil {
-		defer openDialog.Release()
-		if defaultFolder != "" {
-			if err := openDialog.SetDefaultFolder(defaultFolder); err != nil {
-				return "", err
-			}
-		}
-		if err := openDialog.Show(); err == nil {
-			if result, err := openDialog.GetResult(); err == nil {
-				return result, nil
-			} else {
-				return "", err
-			}
-		} else {
-			return "", err
-		}
-	} else {
+	openDialog, err := cfd.NewOpenFileDialog(dialogTitle, defaultFolder, typeFilter)
+	if err != nil {
 		return "", err
 	}
+	return openDialog.ShowAndGet()
 }
 
-func ShowOpenFolderDialog(dialogTitle /*TODO*/, defaultFolder string) (string, error) {
+func ShowOpenFolderDialog(dialogTitle, defaultFolder string) (string, error) {
 	if err := cfd.Initialize(); err != nil {
 		return "", nil
 	}
 	defer cfd.UnInitialize()
 
-	if openDialog, err := cfd.NewOpenFileDialog(); err == nil {
-		defer openDialog.Release()
-		if err := openDialog.SetPickFolders(true); err == nil {
-			if defaultFolder != "" {
-				if err := openDialog.SetDefaultFolder(defaultFolder); err != nil {
-					return "", err
-				}
-			}
-			if err := openDialog.Show(); err == nil {
-				if result, err := openDialog.GetResult(); err == nil {
-					return result, nil
-				} else {
-					return "", err
-				}
-			} else {
-				return "", err
-			}
-		} else {
-			return "", err
-		}
-	} else {
+	openDialog, err := cfd.NewPickFolderDialog(dialogTitle, defaultFolder)
+	if err != nil {
 		return "", err
 	}
+	return openDialog.ShowAndGet()
 }
 
-func ShowSaveFileDialog(dialogTitle /*TODO*/, defaultFolder, typeFilter /*TODO*/ string) (string, error) {
+func ShowSaveFileDialog(dialogTitle, defaultFolder, typeFilter string) (string, error) {
 	if err := cfd.Initialize(); err != nil {
 		return "", nil
 	}
 	defer cfd.UnInitialize()
 
-	if saveDialog, err := cfd.NewSaveFileDialog(); err == nil {
-		defer saveDialog.Release()
-		if defaultFolder != "" {
-			if err := saveDialog.SetDefaultFolder(defaultFolder); err != nil {
-				return "", err
-			}
-		}
-		if err := saveDialog.Show(); err == nil {
-			if result, err := saveDialog.GetResult(); err == nil {
-				return result, nil
-			} else {
-				return "", err
-			}
-		} else {
-			return "", err
-		}
-	} else {
+	saveDialog, err := cfd.NewSaveFileDialog(dialogTitle, defaultFolder, typeFilter)
+	if err != nil {
 		return "", err
 	}
+	return saveDialog.ShowAndGet()
 }

@@ -33,8 +33,19 @@ func (fileOpenDialog *iFileOpenDialog) Show() error {
 	return fileOpenDialog.vtbl.show(unsafe.Pointer(fileOpenDialog))
 }
 
+func (fileOpenDialog *iFileOpenDialog) ShowAndGet() (string, error) {
+	if err := fileOpenDialog.Show(); err != nil {
+		return "", err
+	}
+	return fileOpenDialog.GetResult()
+}
+
 func (fileOpenDialog *iFileOpenDialog) Close() error {
 	return fileOpenDialog.vtbl.close(unsafe.Pointer(fileOpenDialog))
+}
+
+func (fileOpenDialog *iFileOpenDialog) SetTitle(title string) error {
+	return fileOpenDialog.vtbl.setTitle(unsafe.Pointer(fileOpenDialog), title)
 }
 
 func (fileOpenDialog *iFileOpenDialog) GetResult() (string, error) {
@@ -49,7 +60,12 @@ func (fileOpenDialog *iFileOpenDialog) SetDefaultFolder(defaultFolderPath string
 	return fileOpenDialog.vtbl.setDefaultFolder(unsafe.Pointer(fileOpenDialog), defaultFolderPath)
 }
 
-func (fileOpenDialog *iFileOpenDialog) SetPickFolders(pickFolders bool) error {
+func (fileOpenDialog *iFileOpenDialog) SetFileFilter(defaultFolderPath string) error { // TODO
+	return nil
+	return fileOpenDialog.vtbl.setDefaultFolder(unsafe.Pointer(fileOpenDialog), defaultFolderPath)
+}
+
+func (fileOpenDialog *iFileOpenDialog) setPickFolders(pickFolders bool) error {
 	const FosPickfolders = 0x20
 	if pickFolders {
 		return fileOpenDialog.vtbl.addOption(unsafe.Pointer(fileOpenDialog), FosPickfolders)

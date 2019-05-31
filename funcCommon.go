@@ -91,7 +91,7 @@ func (vtbl *iFileDialogVtbl) removeOption(objPtr unsafe.Pointer, option uint32) 
 }
 
 func (vtbl *iFileDialogVtbl) setDefaultFolder(objPtr unsafe.Pointer, path string) error {
-	shellItem, err := newIShellItem(path)
+	shellItem, err := newIShellItem(path) // TODO do we need to defer release()
 	if err != nil {
 		return err
 	}
@@ -99,6 +99,16 @@ func (vtbl *iFileDialogVtbl) setDefaultFolder(objPtr unsafe.Pointer, path string
 		1,
 		uintptr(objPtr),
 		uintptr(unsafe.Pointer(shellItem)),
+		0)
+	return hresultToError(ret)
+}
+
+func (vtbl *iFileDialogVtbl) setTitle(objPtr unsafe.Pointer, title string) error {
+	titlePtr := ole.SysAllocString(title) // TODO do we need to CoTaskMemFree?
+	ret, _, _ := syscall.Syscall(vtbl.SetTitle,
+		1,
+		uintptr(objPtr),
+		uintptr(unsafe.Pointer(titlePtr)),
 		0)
 	return hresultToError(ret)
 }
