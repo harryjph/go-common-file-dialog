@@ -10,7 +10,7 @@ func main() {
 	result, err := cfdutil.ShowSaveFileDialog(cfd.DialogConfig{
 		Title: "Save Text File",
 		Role:  "SaveTextExample",
-		FileFilter: []cfd.FileFilter{
+		FileFilters: []cfd.FileFilter{
 			{
 				DisplayName: "Text Files (*.txt)",
 				Pattern:     "*.txt",

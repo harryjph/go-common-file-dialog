@@ -11,7 +11,7 @@ func main() {
 	saveDialog, err := cfd.NewSaveFileDialog(cfd.DialogConfig{
 		Title: "Save Text File",
 		Role:  "SaveTextExample",
-		FileFilter: []cfd.FileFilter{
+		FileFilters: []cfd.FileFilter{
 			{
 				DisplayName: "Text Files (*.txt)",
 				Pattern:     "*.txt",

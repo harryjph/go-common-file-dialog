@@ -2,6 +2,13 @@
 
 package cfd
 
+var defaultFilters = []FileFilter{
+	{
+		DisplayName: "All Files (*.*)",
+		Pattern:     "*.*",
+	},
+}
+
 func (config *DialogConfig) apply(dialog Dialog) error {
 	var err error
 	if config.Role != "" {
@@ -28,11 +35,16 @@ func (config *DialogConfig) apply(dialog Dialog) error {
 			return err
 		}
 	}
-	if config.FileFilter != nil && len(config.FileFilter) > 0 {
-		err = dialog.SetFileFilter(config.FileFilter)
-		if err != nil {
-			return err
-		}
+	var fileFilters []FileFilter
+
+	if config.FileFilters != nil && len(config.FileFilters) > 0 {
+		fileFilters = config.FileFilters
+	} else {
+		fileFilters = defaultFilters
+	}
+	err = dialog.SetFileFilter(fileFilters)
+	if err != nil {
+		return err
 	}
 	return nil
 }

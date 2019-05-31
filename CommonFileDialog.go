@@ -36,7 +36,7 @@ type DialogConfig struct {
 	InitialFolder string
 	// The file filters that restrict which types of files the dialog is able to choose.
 	// Ignored by Folder Picker.
-	FileFilter []FileFilter
+	FileFilters []FileFilter
 }
 
 // TODO multi picker

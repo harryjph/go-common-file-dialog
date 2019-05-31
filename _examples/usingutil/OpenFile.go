@@ -10,7 +10,7 @@ func main() {
 	result, err := cfdutil.ShowOpenFileDialog(cfd.DialogConfig{
 		Title: "Open Text File",
 		Role:  "OpenTextExample",
-		FileFilter: []cfd.FileFilter{
+		FileFilters: []cfd.FileFilter{
 			{
 				DisplayName: "Text Files (*.txt)",
 				Pattern:     "*.txt",

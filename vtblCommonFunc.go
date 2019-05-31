@@ -3,6 +3,7 @@
 package cfd
 
 import (
+	"fmt"
 	"github.com/go-ole/go-ole"
 	"syscall"
 	"unsafe"
@@ -35,6 +36,9 @@ func (vtbl *iModalWindowVtbl) show(objPtr unsafe.Pointer) error {
 
 func (vtbl *iFileDialogVtbl) setFileTypes(objPtr unsafe.Pointer, filters []FileFilter) error {
 	cFileTypes := len(filters)
+	if cFileTypes < 0 {
+		return fmt.Errorf("must specify at least one filter")
+	}
 	comDlgFilterSpecs := make([]comDlgFilterSpec, cFileTypes)
 	for i := 0; i < cFileTypes; i++ {
 		filter := filters[i]
