@@ -35,7 +35,7 @@ type iFileDialogVtbl struct {
 	AddPlace            uintptr
 	SetDefaultExtension uintptr
 	Close               uintptr // func (hr HRESULT) HRESULT
-	SetClientGuid       uintptr
+	SetClientGuid       uintptr // func (guid REFGUID) HRESULT
 	ClearClientData     uintptr
 	SetFilter           uintptr
 }

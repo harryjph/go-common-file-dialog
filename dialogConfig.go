@@ -1,3 +1,5 @@
+// Cross-platform.
+
 package cfd
 
 func (config *DialogConfig) apply(dialog Dialog) error {

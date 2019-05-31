@@ -1,3 +1,5 @@
+// Cross-platform.
+
 // Common File Dialogs
 package cfd
 

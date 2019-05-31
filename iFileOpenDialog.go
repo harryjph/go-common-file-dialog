@@ -4,6 +4,7 @@ package cfd
 
 import (
 	"github.com/go-ole/go-ole/oleutil"
+	"github.com/harry1453/go-common-file-dialog/util"
 	"unsafe"
 )
 
@@ -69,8 +70,8 @@ func (fileOpenDialog *iFileOpenDialog) SetFileFilter(defaultFolderPath string) e
 	return nil
 }
 
-func (fileOpenDialog *iFileOpenDialog) SetRole(role string) error { // TODO
-	return nil
+func (fileOpenDialog *iFileOpenDialog) SetRole(role string) error {
+	return fileOpenDialog.vtbl.setClientGuid(unsafe.Pointer(fileOpenDialog), util.StringToUUID(role))
 }
 
 func (fileOpenDialog *iFileOpenDialog) setPickFolders(pickFolders bool) error {

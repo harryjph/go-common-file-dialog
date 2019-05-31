@@ -155,3 +155,12 @@ func (vtbl *iFileDialogVtbl) getResultString(objPtr unsafe.Pointer) (string, err
 	defer shellItem.vtbl.release(unsafe.Pointer(shellItem))
 	return shellItem.vtbl.getDisplayName(unsafe.Pointer(shellItem))
 }
+
+func (vtbl *iFileDialogVtbl) setClientGuid(objPtr unsafe.Pointer, guid *ole.GUID) error {
+	ret, _, _ := syscall.Syscall(vtbl.SetClientGuid,
+		1,
+		uintptr(objPtr),
+		uintptr(unsafe.Pointer(guid)),
+		0)
+	return hresultToError(ret)
+}

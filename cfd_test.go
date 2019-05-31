@@ -9,7 +9,11 @@ import (
 func TestOpen(t *testing.T) {
 	Initialize()
 	defer UnInitialize()
-	openDialog, err := NewOpenFileDialog("Test Open", "", "Text Files (*.txt)|*.txt")
+	openDialog, err := NewOpenFileDialog(DialogConfig{
+		Title:      "Test Open",
+		Role:       "TestOpen",
+		FileFilter: "Text Files (*.txt)|*.txt",
+	})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -26,7 +30,10 @@ func TestOpen(t *testing.T) {
 func TestPickFolder(t *testing.T) {
 	Initialize()
 	defer UnInitialize()
-	openDialog, err := NewPickFolderDialog("Test Pick Folder", "")
+	openDialog, err := NewPickFolderDialog(DialogConfig{
+		Title: "Test Pick Folder",
+		Role:  "TestPickFolder",
+	})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -43,7 +50,11 @@ func TestPickFolder(t *testing.T) {
 func TestSave(t *testing.T) {
 	Initialize()
 	defer UnInitialize()
-	saveDialog, err := NewSaveFileDialog("Test Save", "", "Text Files (*.txt)|*.txt")
+	saveDialog, err := NewSaveFileDialog(DialogConfig{
+		Title:      "Test Save",
+		Role:       "TestSave",
+		FileFilter: "Text Files (*.txt)|*.txt",
+	})
 	if err != nil {
 		t.Fatal(err)
 	}

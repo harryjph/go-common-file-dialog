@@ -4,6 +4,7 @@ package cfd
 
 import (
 	"github.com/go-ole/go-ole/oleutil"
+	"github.com/harry1453/go-common-file-dialog/util"
 	"unsafe"
 )
 
@@ -72,6 +73,6 @@ func (fileSaveDialog *iFileSaveDialog) SetFileFilter(defaultFolderPath string) e
 	return nil
 }
 
-func (fileSaveDialog *iFileSaveDialog) SetRole(role string) error { // TODO
-	return nil
+func (fileSaveDialog *iFileSaveDialog) SetRole(role string) error {
+	return fileSaveDialog.vtbl.setClientGuid(unsafe.Pointer(fileSaveDialog), util.StringToUUID(role))
 }

@@ -2,41 +2,41 @@
 
 package cfdutil
 
-import "github.com/harry1453/go-common-file-dialog"
+import . "github.com/harry1453/go-common-file-dialog"
 
-func ShowOpenFileDialog(dialogTitle, defaultFolder, typeFilter string) (string, error) {
-	if err := cfd.Initialize(); err != nil {
+func ShowOpenFileDialog(config DialogConfig) (string, error) {
+	if err := Initialize(); err != nil {
 		return "", nil
 	}
-	defer cfd.UnInitialize()
+	defer UnInitialize()
 
-	openDialog, err := cfd.NewOpenFileDialog(dialogTitle, defaultFolder, typeFilter)
+	openDialog, err := NewOpenFileDialog(config)
 	if err != nil {
 		return "", err
 	}
 	return openDialog.ShowAndGet()
 }
 
-func ShowOpenFolderDialog(dialogTitle, defaultFolder string) (string, error) {
-	if err := cfd.Initialize(); err != nil {
+func ShowOpenFolderDialog(config DialogConfig) (string, error) {
+	if err := Initialize(); err != nil {
 		return "", nil
 	}
-	defer cfd.UnInitialize()
+	defer UnInitialize()
 
-	openDialog, err := cfd.NewPickFolderDialog(dialogTitle, defaultFolder)
+	openDialog, err := NewPickFolderDialog(config)
 	if err != nil {
 		return "", err
 	}
 	return openDialog.ShowAndGet()
 }
 
-func ShowSaveFileDialog(dialogTitle, defaultFolder, typeFilter string) (string, error) {
-	if err := cfd.Initialize(); err != nil {
+func ShowSaveFileDialog(config DialogConfig) (string, error) {
+	if err := Initialize(); err != nil {
 		return "", nil
 	}
-	defer cfd.UnInitialize()
+	defer UnInitialize()
 
-	saveDialog, err := cfd.NewSaveFileDialog(dialogTitle, defaultFolder, typeFilter)
+	saveDialog, err := NewSaveFileDialog(config)
 	if err != nil {
 		return "", err
 	}
