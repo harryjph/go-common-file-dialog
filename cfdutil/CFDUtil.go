@@ -17,7 +17,7 @@ func ShowOpenFileDialog(config DialogConfig) (string, error) {
 	return openDialog.ShowAndGet()
 }
 
-func ShowOpenFolderDialog(config DialogConfig) (string, error) {
+func ShowPickFolderDialog(config DialogConfig) (string, error) {
 	if err := Initialize(); err != nil {
 		return "", nil
 	}
