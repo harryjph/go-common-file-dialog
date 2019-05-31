@@ -3,17 +3,17 @@
 // Common File Dialog for Windows
 package cfd
 
-import "log"
-
-func init() {
-	if err := comInitialize(); err != nil {
-		log.Fatal(err) // TODO don't fatal
-	}
+func Initialize() error {
+	return comInitialize()
 }
 
-type Dialog interface {
+func UnInitialize() {
+	comUnInitialize()
+}
+
+type Dialog interface { // TODO set title
 	Show() error
-	Close() error
+	Close() error // TODO does this even work?
 	SetDefaultFolder(defaultFolder string) error
 	GetResult() (string, error)
 	Release() error

@@ -5,6 +5,9 @@ import (
 )
 
 func TestOpen(t *testing.T) {
+	Initialize()
+	defer UnInitialize()
+
 	openDialog, err := NewOpenFileDialog()
 	if err != nil {
 		t.Fatal(err)
