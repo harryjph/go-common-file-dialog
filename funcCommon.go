@@ -34,29 +34,29 @@ func (vtbl *iModalWindowVtbl) show(objPtr unsafe.Pointer) error {
 }
 
 // Options are:
-// FOS_OVERWRITEPROMPT	= 0x2,
-// FOS_STRICTFILETYPES	= 0x4,
-// FOS_NOCHANGEDIR	= 0x8,
-// FOS_PICKFOLDERS	= 0x20,
-// FOS_FORCEFILESYSTEM	= 0x40,
-// FOS_ALLNONSTORAGEITEMS	= 0x80,
-// FOS_NOVALIDATE	= 0x100,
-// FOS_ALLOWMULTISELECT	= 0x200,
-// FOS_PATHMUSTEXIST	= 0x800,
-// FOS_FILEMUSTEXIST	= 0x1000,
-// FOS_CREATEPROMPT	= 0x2000,
-// FOS_SHAREAWARE	= 0x4000,
-// FOS_NOREADONLYRETURN	= 0x8000,
-// FOS_NOTESTFILECREATE	= 0x10000,
-// FOS_HIDEMRUPLACES	= 0x20000,
-// FOS_HIDEPINNEDPLACES	= 0x40000,
-// FOS_NODEREFERENCELINKS	= 0x100000,
-// FOS_OKBUTTONNEEDSINTERACTION	= 0x200000,
-// FOS_DONTADDTORECENT	= 0x2000000,
-// FOS_FORCESHOWHIDDEN	= 0x10000000,
-// FOS_DEFAULTNOMINIMODE	= 0x20000000,
-// FOS_FORCEPREVIEWPANEON	= 0x40000000,
-// FOS_SUPPORTSTREAMABLEITEMS	= 0x80000000
+// FOS_OVERWRITEPROMPT = 0x2,
+// FOS_STRICTFILETYPES = 0x4,
+// FOS_NOCHANGEDIR = 0x8,
+// FOS_PICKFOLDERS = 0x20,
+// FOS_FORCEFILESYSTEM = 0x40,
+// FOS_ALLNONSTORAGEITEMS = 0x80,
+// FOS_NOVALIDATE = 0x100,
+// FOS_ALLOWMULTISELECT = 0x200,
+// FOS_PATHMUSTEXIST = 0x800,
+// FOS_FILEMUSTEXIST = 0x1000,
+// FOS_CREATEPROMPT = 0x2000,
+// FOS_SHAREAWARE = 0x4000,
+// FOS_NOREADONLYRETURN = 0x8000,
+// FOS_NOTESTFILECREATE = 0x10000,
+// FOS_HIDEMRUPLACES = 0x20000,
+// FOS_HIDEPINNEDPLACES = 0x40000,
+// FOS_NODEREFERENCELINKS = 0x100000,
+// FOS_OKBUTTONNEEDSINTERACTION = 0x200000,
+// FOS_DONTADDTORECENT = 0x2000000,
+// FOS_FORCESHOWHIDDEN = 0x10000000,
+// FOS_DEFAULTNOMINIMODE = 0x20000000,
+// FOS_FORCEPREVIEWPANEON = 0x40000000,
+// FOS_SUPPORTSTREAMABLEITEMS = 0x80000000
 func (vtbl *iFileDialogVtbl) setOptions(objPtr unsafe.Pointer, options uint32) error {
 	ret, _, _ := syscall.Syscall(vtbl.SetOptions,
 		1,
@@ -93,11 +93,24 @@ func (vtbl *iFileDialogVtbl) removeOption(objPtr unsafe.Pointer, option uint32) 
 }
 
 func (vtbl *iFileDialogVtbl) setDefaultFolder(objPtr unsafe.Pointer, path string) error {
-	shellItem, err := newIShellItem(path) // TODO do we need to defer release()
+	shellItem, err := newIShellItem(path) // TODO do we need to defer release()?
 	if err != nil {
 		return err
 	}
 	ret, _, _ := syscall.Syscall(vtbl.SetDefaultFolder,
+		1,
+		uintptr(objPtr),
+		uintptr(unsafe.Pointer(shellItem)),
+		0)
+	return hresultToError(ret)
+}
+
+func (vtbl *iFileDialogVtbl) setFolder(objPtr unsafe.Pointer, path string) error {
+	shellItem, err := newIShellItem(path) // TODO do we need to defer release()?
+	if err != nil {
+		return err
+	}
+	ret, _, _ := syscall.Syscall(vtbl.SetFolder,
 		1,
 		uintptr(objPtr),
 		uintptr(unsafe.Pointer(shellItem)),
