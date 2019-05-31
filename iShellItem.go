@@ -42,7 +42,7 @@ func newIShellItem(path string) (*iShellItem, error) {
 		uintptr(unsafe.Pointer(pathPtr)),
 		0,
 		uintptr(unsafe.Pointer(iidShellItem)),
-		uintptr(unsafe.Pointer(shellItem)))
+		uintptr(unsafe.Pointer(&shellItem)))
 	return shellItem, hresultToError(ret)
 }
 
