@@ -6,7 +6,7 @@ import (
 	"unsafe"
 )
 
-type iShellItem struct { // TODO move this and its logic into separate file?
+type iShellItem struct {
 	vtbl *iShellItemVtbl
 }
 
@@ -20,12 +20,11 @@ type iShellItemVtbl struct {
 }
 
 func (vtbl *iShellItemVtbl) getDisplayName(objPtr unsafe.Pointer) (string, error) {
-	const SIGDN_FILESYSPATH = 0x80058000
 	var ptr *uint16
 	ret, _, _ := syscall.Syscall(vtbl.GetDisplayName,
 		2,
 		uintptr(objPtr),
-		SIGDN_FILESYSPATH,
+		0x80058000, // SIGDN_FILESYSPATH
 		uintptr(unsafe.Pointer(&ptr)))
 	if ret != 0 {
 		return "", ole.NewError(ret)
