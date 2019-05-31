@@ -45,7 +45,7 @@ func (vtbl *iFileDialogVtbl) close(objPtr unsafe.Pointer) error {
 }
 
 func (vtbl *iFileDialogVtbl) getResult(objPtr unsafe.Pointer) (*iShellItem, error) {
-	var shellItem iShellItem
+	var shellItem *iShellItem
 	ret, _, _ := syscall.Syscall(vtbl.GetResult,
 		1,
 		uintptr(objPtr),
@@ -54,5 +54,5 @@ func (vtbl *iFileDialogVtbl) getResult(objPtr unsafe.Pointer) (*iShellItem, erro
 	if ret != 0 {
 		return nil, ole.NewError(ret)
 	}
-	return &shellItem, nil
+	return shellItem, nil
 }
