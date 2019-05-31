@@ -29,5 +29,6 @@ func (vtbl *iShellItemVtbl) getDisplayName(objPtr unsafe.Pointer) (string, error
 	if ret != 0 {
 		return "", ole.NewError(ret)
 	}
+	// TODO CoTaskMemFree
 	return ole.LpOleStrToString(ptr), nil
 }

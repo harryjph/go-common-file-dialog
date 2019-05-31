@@ -43,3 +43,7 @@ func (fileSaveDialog *iFileSaveDialog) Close() error {
 func (fileSaveDialog *iFileSaveDialog) GetResult() (string, error) {
 	return fileSaveDialog.vtbl.getResultString(unsafe.Pointer(fileSaveDialog))
 }
+
+func (fileSaveDialog *iFileSaveDialog) Release() error {
+	return fileSaveDialog.vtbl.release(unsafe.Pointer(fileSaveDialog))
+}

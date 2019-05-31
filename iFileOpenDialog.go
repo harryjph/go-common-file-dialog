@@ -40,3 +40,7 @@ func (fileOpenDialog *iFileOpenDialog) Close() error {
 func (fileOpenDialog *iFileOpenDialog) GetResult() (string, error) {
 	return fileOpenDialog.vtbl.getResultString(unsafe.Pointer(fileOpenDialog))
 }
+
+func (fileOpenDialog *iFileOpenDialog) Release() error {
+	return fileOpenDialog.vtbl.release(unsafe.Pointer(fileOpenDialog))
+}

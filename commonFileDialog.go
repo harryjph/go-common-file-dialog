@@ -15,6 +15,7 @@ type Dialog interface {
 	Show() error
 	Close() error
 	GetResult() (string, error)
+	Release() error
 }
 
 func NewOpenFileDialog() (Dialog, error) {
