@@ -1,3 +1,5 @@
+// +build windows
+
 package cfdutil
 
 import "github.com/harry1453/go-common-file-dialog"
