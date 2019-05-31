@@ -9,7 +9,6 @@ import (
 
 const (
 	clsidFilesavedialog = "{C0B4E2F3-BA21-4773-8DBA-335EC946EB8B}"
-	iidFileSaveDialog   = "{84bccd23-5fde-4cdb-aea4-af64b83d78ab}" // TODO remove if unneeded
 )
 
 type iFileSaveDialog struct {
@@ -71,5 +70,4 @@ func (fileSaveDialog *iFileSaveDialog) SetFolder(defaultFolderPath string) error
 
 func (fileSaveDialog *iFileSaveDialog) SetFileFilter(defaultFolderPath string) error { // TODO
 	return nil
-	return fileSaveDialog.vtbl.setDefaultFolder(unsafe.Pointer(fileSaveDialog), defaultFolderPath)
 }

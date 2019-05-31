@@ -20,7 +20,6 @@ type iFileOpenDialogVtbl struct {
 
 const (
 	clsidFileopendialog = "{DC1C5A9C-E88A-4dde-A5A1-60F82A20AEF7}"
-	iidFileOpenDialog   = "{D57C7288-D4AD-4768-BE02-9D969532D960}" // TODO remove if unnedeed
 )
 
 func newIFileOpenDialog() (*iFileOpenDialog, error) {
@@ -68,7 +67,6 @@ func (fileOpenDialog *iFileOpenDialog) SetFolder(defaultFolderPath string) error
 
 func (fileOpenDialog *iFileOpenDialog) SetFileFilter(defaultFolderPath string) error { // TODO
 	return nil
-	return fileOpenDialog.vtbl.setDefaultFolder(unsafe.Pointer(fileOpenDialog), defaultFolderPath)
 }
 
 func (fileOpenDialog *iFileOpenDialog) setPickFolders(pickFolders bool) error {
