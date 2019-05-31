@@ -38,9 +38,5 @@ func (fileOpenDialog *iFileOpenDialog) Close() error {
 }
 
 func (fileOpenDialog *iFileOpenDialog) GetResult() (string, error) {
-	shellItem, err := fileOpenDialog.vtbl.getResult(unsafe.Pointer(fileOpenDialog))
-	if err != nil {
-		return "", err
-	}
-	return shellItem.vtbl.getDisplayName(unsafe.Pointer(shellItem))
+	return fileOpenDialog.vtbl.getResultString(unsafe.Pointer(fileOpenDialog))
 }

@@ -41,9 +41,5 @@ func (fileSaveDialog *iFileSaveDialog) Close() error {
 }
 
 func (fileSaveDialog *iFileSaveDialog) GetResult() (string, error) {
-	shellItem, err := fileSaveDialog.vtbl.getResult(unsafe.Pointer(fileSaveDialog))
-	if err != nil {
-		return "", err
-	}
-	return shellItem.vtbl.getDisplayName(unsafe.Pointer(shellItem))
+	return fileSaveDialog.vtbl.getResultString(unsafe.Pointer(fileSaveDialog))
 }
