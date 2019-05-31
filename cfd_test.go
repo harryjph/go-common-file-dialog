@@ -5,7 +5,7 @@ import (
 )
 
 func TestOpen(t *testing.T) {
-	openDialog, err := newIFileOpenDialog()
+	openDialog, err := NewOpenFileDialog()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -26,7 +26,7 @@ func TestOpen(t *testing.T) {
 }
 
 func TestSave(t *testing.T) {
-	saveDialog, err := newIFileSaveDialog()
+	saveDialog, err := NewSaveFileDialog()
 	if err != nil {
 		t.Fatal(err)
 	}

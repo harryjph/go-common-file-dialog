@@ -14,22 +14,13 @@ func init() {
 type Dialog interface {
 	Show() error
 	Close() error
+	GetResult() (string, error)
 }
 
-type OpenFileDialog interface {
-	Dialog
-	//GetPath() string // TODO more methods
+func NewOpenFileDialog() (Dialog, error) {
+	return newIFileOpenDialog()
 }
 
-type SaveFileDialog interface {
-	Dialog
-	// TODO more methods
-}
-
-func NewSaveFileDialog() (OpenFileDialog, error) {
-	return newIFileOpenDialog() // TODO
-}
-
-func NewOpenFileDialog() (SaveFileDialog, error) {
-	return newIFileSaveDialog() // TODO
+func NewSaveFileDialog() (Dialog, error) {
+	return newIFileSaveDialog()
 }

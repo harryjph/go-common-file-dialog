@@ -6,20 +6,6 @@ import (
 	"unsafe"
 )
 
-func (vtbl *iShellItemVtbl) getDisplayName(objPtr unsafe.Pointer) (string, error) {
-	const SIGDN_FILESYSPATH = 0x80058000
-	var ptr *uint16
-	ret, _, _ := syscall.Syscall(vtbl.GetDisplayName,
-		2,
-		uintptr(objPtr),
-		SIGDN_FILESYSPATH,
-		uintptr(unsafe.Pointer(&ptr)))
-	if ret != 0 {
-		return "", ole.NewError(ret)
-	}
-	return ole.LpOleStrToString(ptr), nil
-}
-
 func (vtbl *iModalWindowVtbl) show(objPtr unsafe.Pointer) error {
 	ret, _, _ := syscall.Syscall(vtbl.Show,
 		1,
