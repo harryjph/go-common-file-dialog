@@ -48,3 +48,12 @@ func (fileOpenDialog *iFileOpenDialog) Release() error {
 func (fileOpenDialog *iFileOpenDialog) SetDefaultFolder(defaultFolderPath string) error {
 	return fileOpenDialog.vtbl.setDefaultFolder(unsafe.Pointer(fileOpenDialog), defaultFolderPath)
 }
+
+func (fileOpenDialog *iFileOpenDialog) SetPickFolders(pickFolders bool) error {
+	const FosPickfolders = 0x20
+	if pickFolders {
+		return fileOpenDialog.vtbl.addOption(unsafe.Pointer(fileOpenDialog), FosPickfolders)
+	} else {
+		return fileOpenDialog.vtbl.removeOption(unsafe.Pointer(fileOpenDialog), FosPickfolders)
+	}
+}

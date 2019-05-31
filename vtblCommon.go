@@ -18,8 +18,8 @@ type iFileDialogVtbl struct {
 	GetFileTypeIndex    uintptr
 	Advise              uintptr
 	Unadvise            uintptr
-	SetOptions          uintptr
-	GetOptions          uintptr
+	SetOptions          uintptr // func (fos FILEOPENDIALOGOPTIONS) HRESULT
+	GetOptions          uintptr // func (pfos *FILEOPENDIALOGOPTIONS) HRESULT
 	SetDefaultFolder    uintptr // func (psi *IShellItem) HRESULT
 	SetFolder           uintptr
 	GetFolder           uintptr

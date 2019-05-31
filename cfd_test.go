@@ -15,7 +15,10 @@ func TestOpen(t *testing.T) {
 			t.Fatal(err)
 		}
 	}()*/
-	if err := openDialog.SetDefaultFolder("C:\\Users\\Harry"); err != nil {
+	if err := openDialog.SetPickFolders(true); err != nil {
+		t.Fatal(err)
+	}
+	if err := openDialog.SetDefaultFolder("P:\\"); err != nil {
 		t.Fatal(err)
 	}
 	if err := openDialog.Show(); err != nil {

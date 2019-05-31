@@ -19,10 +19,19 @@ type Dialog interface {
 	Release() error
 }
 
-func NewOpenFileDialog() (Dialog, error) {
+type OpenDialog interface {
+	Dialog
+	SetPickFolders(bool) error
+}
+
+type SaveDialog interface {
+	Dialog
+}
+
+func NewOpenFileDialog() (OpenDialog, error) {
 	return newIFileOpenDialog()
 }
 
-func NewSaveFileDialog() (Dialog, error) {
+func NewSaveFileDialog() (SaveDialog, error) {
 	return newIFileSaveDialog()
 }
