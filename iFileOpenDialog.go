@@ -118,7 +118,7 @@ func (vtbl *iFileOpenDialogVtbl) getResults(objPtr unsafe.Pointer) ([]string, er
 		return nil, err
 	}
 	if shellItemArray == nil {
-		return nil, fmt.Errorf("ShellItemArray returned was null")
+		return nil, fmt.Errorf("ShellItemArray was nil")
 	}
 	defer shellItemArray.vtbl.release(unsafe.Pointer(shellItemArray))
 	count, err := shellItemArray.vtbl.getCount(unsafe.Pointer(shellItemArray))
