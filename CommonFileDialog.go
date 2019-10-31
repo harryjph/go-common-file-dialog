@@ -4,7 +4,8 @@
 package cfd
 
 func Initialize() error {
-	return comInitialize()
+	comInitialize()
+	return nil // For future use
 }
 
 func UnInitialize() {

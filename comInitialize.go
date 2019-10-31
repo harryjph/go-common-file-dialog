@@ -10,18 +10,13 @@ import (
 var initialized = false
 var initLock sync.Mutex
 
-func comInitialize() error {
+func comInitialize() {
 	initLock.Lock()
 	defer initLock.Unlock()
 
 	if !initialized {
-		err := ole.CoInitializeEx(0, ole.COINIT_APARTMENTTHREADED|ole.COINIT_DISABLE_OLE1DDE)
-		if err == nil {
-			initialized = true
-		}
-		return err
-	} else {
-		return nil
+		ole.CoInitializeEx(0, ole.COINIT_APARTMENTTHREADED|ole.COINIT_DISABLE_OLE1DDE)
+		initialized = true
 	}
 }
 
