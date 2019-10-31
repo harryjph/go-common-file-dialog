@@ -21,22 +21,30 @@ type iShellItemArrayVtbl struct {
 	EnumItems                  uintptr
 }
 
-func (vtbl *iShellItemArrayVtbl) getCount(objPtr unsafe.Pointer) (int32, error) {
-	// TODO
-	return 0, nil
+func (vtbl *iShellItemArrayVtbl) getCount(objPtr unsafe.Pointer) (uintptr, error) {
+	var count uintptr
+	ret, _, _ := syscall.Syscall(vtbl.GetCount,
+		1,
+		uintptr(objPtr),
+		uintptr(unsafe.Pointer(&count)),
+		0)
+	if err := hresultToError(ret); err != nil {
+		return 0, err
+	}
+	return count, nil
 }
 
-func (vtbl *iShellItemArrayVtbl) getItemAt(objPtr unsafe.Pointer, index int32) (string, error) {
+func (vtbl *iShellItemArrayVtbl) getItemAt(objPtr unsafe.Pointer, index uintptr) (string, error) {
 	var shellItem *iShellItem
 	ret, _, _ := syscall.Syscall(vtbl.GetItemAt,
 		2,
 		uintptr(objPtr),
-		uintptr(index),
+		index,
 		uintptr(unsafe.Pointer(&shellItem)))
 	if err := hresultToError(ret); err != nil {
 		return "", err
 	}
 	// TODO nil check on shellItem
 	defer shellItem.vtbl.release(unsafe.Pointer(shellItem))
-	return shellItem.vtbl.getDisplayName(unsafe.Pointer(shellItem)) // TODO do we really need to wrap every single call using a pointer?
+	return shellItem.vtbl.getDisplayName(unsafe.Pointer(shellItem))
 }

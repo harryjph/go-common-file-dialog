@@ -3,6 +3,7 @@
 package cfd
 
 import (
+	"fmt"
 	"github.com/go-ole/go-ole/oleutil"
 	"github.com/harry1453/go-common-file-dialog/util"
 	"syscall"
@@ -22,21 +23,6 @@ type iFileOpenDialogVtbl struct {
 
 	GetResults       uintptr // func (ppenum **IShellItemArray) HRESULT
 	GetSelectedItems uintptr
-}
-
-func (vtbl *iFileOpenDialogVtbl) getResults(objPtr unsafe.Pointer) ([]string, error) {
-	var shellItemArray *iShellItemArray
-	ret, _, _ := syscall.Syscall(vtbl.GetResults,
-		1,
-		uintptr(objPtr),
-		uintptr(unsafe.Pointer(&shellItemArray)),
-		0)
-	// TODO null check
-	a, err := shellItemArray.vtbl.getItemAt(unsafe.Pointer(shellItemArray), 0)
-	if a != "" && err != nil {
-
-	}
-	return nil, hresultToError(ret) // TODO
 }
 
 func newIFileOpenDialog() (*iFileOpenDialog, error) {
@@ -119,4 +105,33 @@ func (fileOpenDialog *iFileOpenDialog) setIsMultiselect(isMultiSelect bool) erro
 	} else {
 		return fileOpenDialog.vtbl.removeOption(unsafe.Pointer(fileOpenDialog), FosAllowMultiselect)
 	}
+}
+
+func (vtbl *iFileOpenDialogVtbl) getResults(objPtr unsafe.Pointer) ([]string, error) {
+	var shellItemArray *iShellItemArray
+	ret, _, _ := syscall.Syscall(vtbl.GetResults,
+		1,
+		uintptr(objPtr),
+		uintptr(unsafe.Pointer(&shellItemArray)),
+		0)
+	if err := hresultToError(ret); err != nil {
+		return nil, err
+	}
+	if shellItemArray == nil {
+		return nil, fmt.Errorf("ShellItemArray returned was null")
+	}
+	defer shellItemArray.vtbl.release(unsafe.Pointer(shellItemArray))
+	count, err := shellItemArray.vtbl.getCount(unsafe.Pointer(shellItemArray))
+	if err != nil {
+		return nil, err
+	}
+	var results []string
+	for i := uintptr(0); i < count; i++ {
+		newItem, err := shellItemArray.vtbl.getItemAt(unsafe.Pointer(shellItemArray), i)
+		if err != nil {
+			return nil, err
+		}
+		results = append(results, newItem)
+	}
+	return results, nil
 }
