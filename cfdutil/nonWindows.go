@@ -8,14 +8,18 @@ import (
 
 var unsupportedError = fmt.Errorf("CFD is not supported on non-windows platforms")
 
-func ShowOpenFileDialog(dialogTitle, defaultFolder, typeFilter string) (string, error) {
+func ShowOpenFileDialog(config DialogConfig) (string, error) {
 	return "", unsupportedError
 }
 
-func ShowOpenFolderDialog(dialogTitle, defaultFolder string) (string, error) {
+func ShowOpenMultipleFilesDialog(config DialogConfig) ([]string, error) {
 	return "", unsupportedError
 }
 
-func ShowSaveFileDialog(dialogTitle, defaultFolder, typeFilter string) (string, error) {
+func ShowPickFolderDialog(config DialogConfig) (string, error) {
+	return "", unsupportedError
+}
+
+func ShowSaveFileDialog(config DialogConfig) (string, error) {
 	return "", unsupportedError
 }

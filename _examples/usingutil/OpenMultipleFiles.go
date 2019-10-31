@@ -7,9 +7,9 @@ import (
 )
 
 func main() {
-	result, err := cfdutil.ShowSaveFileDialog(cfd.DialogConfig{
-		Title: "Save Text File",
-		Role:  "SaveTextExample",
+	results, err := cfdutil.ShowOpenMultipleFilesDialog(cfd.DialogConfig{
+		Title: "Open Text File",
+		Role:  "OpenTextExample",
 		FileFilters: []cfd.FileFilter{
 			{
 				DisplayName: "Text Files (*.txt)",
@@ -24,5 +24,5 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Chosen file: %s\n", result)
+	log.Printf("Chosen file: %s\n", results)
 }

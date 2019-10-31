@@ -8,9 +8,9 @@ import (
 func main() {
 	cfd.Initialize()
 	defer cfd.UnInitialize()
-	saveDialog, err := cfd.NewSaveFileDialog(cfd.DialogConfig{
-		Title: "Save Text File",
-		Role:  "SaveTextExample",
+	openMultiDialog, err := cfd.NewOpenMultipleFileDialog(cfd.DialogConfig{
+		Title: "Open Text File",
+		Role:  "OpenTextExample",
 		FileFilters: []cfd.FileFilter{
 			{
 				DisplayName: "Text Files (*.txt)",
@@ -25,12 +25,12 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	if err := saveDialog.Show(); err != nil {
+	if err := openMultiDialog.Show(); err != nil {
 		log.Fatal(err)
 	}
-	result, err := saveDialog.GetResult()
+	results, err := openMultiDialog.GetResults()
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Chosen file: %s\n", result)
+	log.Println("Chosen files", results)
 }

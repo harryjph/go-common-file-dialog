@@ -5,7 +5,12 @@ package cfd
 import (
 	"github.com/go-ole/go-ole/oleutil"
 	"github.com/harry1453/go-common-file-dialog/util"
+	"syscall"
 	"unsafe"
+)
+
+const (
+	fileOpenDialogCLSID = "{DC1C5A9C-E88A-4dde-A5A1-60F82A20AEF7}"
 )
 
 type iFileOpenDialog struct {
@@ -15,16 +20,27 @@ type iFileOpenDialog struct {
 type iFileOpenDialogVtbl struct {
 	iFileDialogVtbl
 
-	GetResults       uintptr
+	GetResults       uintptr // func (ppenum **IShellItemArray) HRESULT
 	GetSelectedItems uintptr
 }
 
-const (
-	clsidFileopendialog = "{DC1C5A9C-E88A-4dde-A5A1-60F82A20AEF7}"
-)
+func (vtbl *iFileOpenDialogVtbl) getResults(objPtr unsafe.Pointer) ([]string, error) {
+	var shellItemArray *iShellItemArray
+	ret, _, _ := syscall.Syscall(vtbl.GetResults,
+		1,
+		uintptr(objPtr),
+		uintptr(unsafe.Pointer(&shellItemArray)),
+		0)
+	// TODO null check
+	a, err := shellItemArray.vtbl.getItemAt(unsafe.Pointer(shellItemArray), 0)
+	if a != "" && err != nil {
+
+	}
+	return nil, hresultToError(ret) // TODO
+}
 
 func newIFileOpenDialog() (*iFileOpenDialog, error) {
-	if unknown, err := oleutil.CreateObject(clsidFileopendialog); err == nil {
+	if unknown, err := oleutil.CreateObject(fileOpenDialogCLSID); err == nil {
 		return (*iFileOpenDialog)(unsafe.Pointer(unknown)), nil
 	} else {
 		return nil, err
@@ -40,6 +56,13 @@ func (fileOpenDialog *iFileOpenDialog) ShowAndGet() (string, error) {
 		return "", err
 	}
 	return fileOpenDialog.GetResult()
+}
+
+func (fileOpenDialog *iFileOpenDialog) ShowAndGetAll() ([]string, error) {
+	if err := fileOpenDialog.Show(); err != nil {
+		return nil, err
+	}
+	return fileOpenDialog.GetResults()
 }
 
 func (fileOpenDialog *iFileOpenDialog) Close() error {
@@ -74,11 +97,26 @@ func (fileOpenDialog *iFileOpenDialog) SetRole(role string) error {
 	return fileOpenDialog.vtbl.setClientGuid(unsafe.Pointer(fileOpenDialog), util.StringToUUID(role))
 }
 
+// This should only be callable when the user asks for a multi select because
+// otherwise they will be given the Dialog interface which does not expose this function.
+func (fileOpenDialog *iFileOpenDialog) GetResults() ([]string, error) {
+	return fileOpenDialog.vtbl.getResults(unsafe.Pointer(fileOpenDialog))
+}
+
 func (fileOpenDialog *iFileOpenDialog) setPickFolders(pickFolders bool) error {
 	const FosPickfolders = 0x20
 	if pickFolders {
 		return fileOpenDialog.vtbl.addOption(unsafe.Pointer(fileOpenDialog), FosPickfolders)
 	} else {
 		return fileOpenDialog.vtbl.removeOption(unsafe.Pointer(fileOpenDialog), FosPickfolders)
+	}
+}
+
+func (fileOpenDialog *iFileOpenDialog) setIsMultiselect(isMultiSelect bool) error {
+	const FosAllowMultiselect = 0x200
+	if isMultiSelect {
+		return fileOpenDialog.vtbl.addOption(unsafe.Pointer(fileOpenDialog), FosAllowMultiselect)
+	} else {
+		return fileOpenDialog.vtbl.removeOption(unsafe.Pointer(fileOpenDialog), FosAllowMultiselect)
 	}
 }

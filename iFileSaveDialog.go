@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	clsidFilesavedialog = "{C0B4E2F3-BA21-4773-8DBA-335EC946EB8B}"
+	saveFileDialogCLSID = "{C0B4E2F3-BA21-4773-8DBA-335EC946EB8B}"
 )
 
 type iFileSaveDialog struct {
@@ -27,7 +27,7 @@ type iFileSaveDialogVtbl struct {
 }
 
 func newIFileSaveDialog() (*iFileSaveDialog, error) {
-	if unknown, err := oleutil.CreateObject(clsidFilesavedialog); err == nil {
+	if unknown, err := oleutil.CreateObject(saveFileDialogCLSID); err == nil {
 		return (*iFileSaveDialog)(unsafe.Pointer(unknown)), nil
 	} else {
 		return nil, err

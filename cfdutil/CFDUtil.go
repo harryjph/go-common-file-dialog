@@ -6,7 +6,7 @@ import . "github.com/harry1453/go-common-file-dialog"
 
 func ShowOpenFileDialog(config DialogConfig) (string, error) {
 	if err := Initialize(); err != nil {
-		return "", nil
+		return "", err
 	}
 	defer UnInitialize()
 
@@ -17,9 +17,22 @@ func ShowOpenFileDialog(config DialogConfig) (string, error) {
 	return openDialog.ShowAndGet()
 }
 
+func ShowOpenMultipleFilesDialog(config DialogConfig) ([]string, error) {
+	if err := Initialize(); err != nil {
+		return nil, err
+	}
+	defer UnInitialize()
+
+	openDialog, err := NewOpenMultipleFileDialog(config)
+	if err != nil {
+		return nil, err
+	}
+	return openDialog.ShowAndGetAll()
+}
+
 func ShowPickFolderDialog(config DialogConfig) (string, error) {
 	if err := Initialize(); err != nil {
-		return "", nil
+		return "", err
 	}
 	defer UnInitialize()
 
@@ -32,7 +45,7 @@ func ShowPickFolderDialog(config DialogConfig) (string, error) {
 
 func ShowSaveFileDialog(config DialogConfig) (string, error) {
 	if err := Initialize(); err != nil {
-		return "", nil
+		return "", err
 	}
 	defer UnInitialize()
 

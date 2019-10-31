@@ -39,8 +39,6 @@ type DialogConfig struct {
 	FileFilters []FileFilter
 }
 
-// TODO multi picker
-
 type Dialog interface { // TODO setDefaultExtension?
 	Show() error
 	ShowAndGet() (string, error)
@@ -52,4 +50,10 @@ type Dialog interface { // TODO setDefaultExtension?
 	SetFileFilter(fileFilter []FileFilter) error
 	GetResult() (string, error)
 	Release() error
+}
+
+type OpenMultipleDialog interface {
+	Dialog
+	ShowAndGetAll() ([]string, error)
+	GetResults() ([]string, error)
 }
