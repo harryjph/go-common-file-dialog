@@ -31,7 +31,6 @@ func NewOpenMultipleFileDialog(config DialogConfig) (OpenMultipleDialog, error) 
 	if err != nil {
 		return nil, err
 	}
-	// TODO null check?
 	err = config.apply(openDialog)
 	if err != nil {
 		return nil, err

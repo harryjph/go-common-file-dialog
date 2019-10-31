@@ -10,7 +10,7 @@ import (
 )
 
 func hresultToError(hr uintptr) error {
-	if hr != 0 {
+	if hr < 0 {
 		return ole.NewError(hr)
 	}
 	return nil
@@ -41,7 +41,7 @@ func (vtbl *iFileDialogVtbl) setFileTypes(objPtr unsafe.Pointer, filters []FileF
 	}
 	comDlgFilterSpecs := make([]comDlgFilterSpec, cFileTypes)
 	for i := 0; i < cFileTypes; i++ {
-		filter := filters[i]
+		filter := &filters[i]
 		comDlgFilterSpecs[i] = comDlgFilterSpec{
 			pszName: ole.SysAllocString(filter.DisplayName),
 			pszSpec: ole.SysAllocString(filter.Pattern),
@@ -52,7 +52,6 @@ func (vtbl *iFileDialogVtbl) setFileTypes(objPtr unsafe.Pointer, filters []FileF
 		uintptr(objPtr),
 		uintptr(cFileTypes),
 		uintptr(unsafe.Pointer(&comDlgFilterSpecs[0])))
-	// TODO we need to CoTaskMemFree on everything we just assigned (in the array)
 	return hresultToError(ret)
 }
 
@@ -116,10 +115,11 @@ func (vtbl *iFileDialogVtbl) removeOption(objPtr unsafe.Pointer, option uint32) 
 }
 
 func (vtbl *iFileDialogVtbl) setDefaultFolder(objPtr unsafe.Pointer, path string) error {
-	shellItem, err := newIShellItem(path) // TODO do we need to defer release()?
+	shellItem, err := newIShellItem(path)
 	if err != nil {
 		return err
 	}
+	defer shellItem.vtbl.release(unsafe.Pointer(shellItem))
 	ret, _, _ := syscall.Syscall(vtbl.SetDefaultFolder,
 		1,
 		uintptr(objPtr),
@@ -129,10 +129,11 @@ func (vtbl *iFileDialogVtbl) setDefaultFolder(objPtr unsafe.Pointer, path string
 }
 
 func (vtbl *iFileDialogVtbl) setFolder(objPtr unsafe.Pointer, path string) error {
-	shellItem, err := newIShellItem(path) // TODO do we need to defer release()?
+	shellItem, err := newIShellItem(path)
 	if err != nil {
 		return err
 	}
+	defer shellItem.vtbl.release(unsafe.Pointer(shellItem))
 	ret, _, _ := syscall.Syscall(vtbl.SetFolder,
 		1,
 		uintptr(objPtr),
@@ -142,7 +143,7 @@ func (vtbl *iFileDialogVtbl) setFolder(objPtr unsafe.Pointer, path string) error
 }
 
 func (vtbl *iFileDialogVtbl) setTitle(objPtr unsafe.Pointer, title string) error {
-	titlePtr := ole.SysAllocString(title) // TODO do we need to CoTaskMemFree?
+	titlePtr := ole.SysAllocString(title)
 	ret, _, _ := syscall.Syscall(vtbl.SetTitle,
 		1,
 		uintptr(objPtr),
@@ -174,6 +175,9 @@ func (vtbl *iFileDialogVtbl) getResultString(objPtr unsafe.Pointer) (string, err
 	shellItem, err := vtbl.getResult(objPtr)
 	if err != nil {
 		return "", err
+	}
+	if shellItem == nil {
+		return "", fmt.Errorf("shell item was nil")
 	}
 	defer shellItem.vtbl.release(unsafe.Pointer(shellItem))
 	return shellItem.vtbl.getDisplayName(unsafe.Pointer(shellItem))

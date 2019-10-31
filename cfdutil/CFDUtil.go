@@ -14,6 +14,7 @@ func ShowOpenFileDialog(config DialogConfig) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	defer openDialog.Release()
 	return openDialog.ShowAndGet()
 }
 
@@ -27,6 +28,7 @@ func ShowOpenMultipleFilesDialog(config DialogConfig) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer openDialog.Release()
 	return openDialog.ShowAndGetAll()
 }
 
@@ -40,6 +42,7 @@ func ShowPickFolderDialog(config DialogConfig) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	defer openDialog.Release()
 	return openDialog.ShowAndGet()
 }
 
@@ -53,5 +56,6 @@ func ShowSaveFileDialog(config DialogConfig) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	defer saveDialog.Release()
 	return saveDialog.ShowAndGet()
 }
