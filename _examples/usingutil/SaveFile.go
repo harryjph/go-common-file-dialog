@@ -1,16 +1,16 @@
 package main
 
 import (
-	cfd "github.com/harry1453/go-common-file-dialog"
+	cfd2 "github.com/harry1453/go-common-file-dialog/cfd"
 	"github.com/harry1453/go-common-file-dialog/cfdutil"
 	"log"
 )
 
 func main() {
-	result, err := cfdutil.ShowSaveFileDialog(cfd.DialogConfig{
+	result, err := cfdutil.ShowSaveFileDialog(cfd2.DialogConfig{
 		Title: "Save Text File",
 		Role:  "SaveTextExample",
-		FileFilters: []cfd.FileFilter{
+		FileFilters: []cfd2.FileFilter{
 			{
 				DisplayName: "Text Files (*.txt)",
 				Pattern:     "*.txt",

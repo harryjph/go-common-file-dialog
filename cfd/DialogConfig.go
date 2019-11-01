@@ -1,16 +1,6 @@
 // Cross-platform.
 
-// Common File Dialogs
 package cfd
-
-func Initialize() error {
-	comInitialize()
-	return nil // For future use
-}
-
-func UnInitialize() {
-	comUnInitialize()
-}
 
 type FileFilter struct {
 	// The display name of the filter (That is shown to the user)
@@ -40,21 +30,49 @@ type DialogConfig struct {
 	FileFilters []FileFilter
 }
 
-type Dialog interface { // TODO setDefaultExtension?
-	Show() error
-	ShowAndGet() (string, error)
-	Close() error // TODO does this even work?
-	SetTitle(title string) error
-	SetRole(role string) error
-	SetDefaultFolder(defaultFolder string) error
-	SetInitialFolder(folder string) error
-	SetFileFilter(fileFilter []FileFilter) error
-	GetResult() (string, error)
-	Release() error
+var defaultFilters = []FileFilter{
+	{
+		DisplayName: "All Files (*.*)",
+		Pattern:     "*.*",
+	},
 }
 
-type OpenMultipleDialog interface {
-	Dialog
-	ShowAndGetAll() ([]string, error)
-	GetResults() ([]string, error)
+func (config *DialogConfig) apply(dialog Dialog) error {
+	var err error
+	if config.Role != "" {
+		err = dialog.SetTitle(config.Title)
+		if err != nil {
+			return err
+		}
+	}
+	if config.Role != "" {
+		err = dialog.SetRole(config.Role)
+		if err != nil {
+			return err
+		}
+	}
+	if config.InitialFolder != "" {
+		err = dialog.SetInitialFolder(config.InitialFolder)
+		if err != nil {
+			return err
+		}
+	}
+	if config.DefaultFolder != "" {
+		err = dialog.SetDefaultFolder(config.DefaultFolder)
+		if err != nil {
+			return err
+		}
+	}
+	var fileFilters []FileFilter
+
+	if config.FileFilters != nil && len(config.FileFilters) > 0 {
+		fileFilters = config.FileFilters
+	} else {
+		fileFilters = defaultFilters
+	}
+	err = dialog.SetFileFilter(fileFilters)
+	if err != nil {
+		return err
+	}
+	return nil
 }

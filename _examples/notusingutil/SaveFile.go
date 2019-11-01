@@ -1,13 +1,11 @@
 package main
 
 import (
-	cfd "github.com/harry1453/go-common-file-dialog"
+	"github.com/harry1453/go-common-file-dialog/cfd"
 	"log"
 )
 
 func main() {
-	cfd.Initialize()
-	defer cfd.UnInitialize()
 	saveDialog, err := cfd.NewSaveFileDialog(cfd.DialogConfig{
 		Title: "Save Text File",
 		Role:  "SaveTextExample",

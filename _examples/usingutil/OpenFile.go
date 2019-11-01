@@ -1,16 +1,16 @@
 package main
 
 import (
-	cfd "github.com/harry1453/go-common-file-dialog"
+	cfd2 "github.com/harry1453/go-common-file-dialog/cfd"
 	"github.com/harry1453/go-common-file-dialog/cfdutil"
 	"log"
 )
 
 func main() {
-	result, err := cfdutil.ShowOpenFileDialog(cfd.DialogConfig{
+	result, err := cfdutil.ShowOpenFileDialog(cfd2.DialogConfig{
 		Title: "Open Text File",
 		Role:  "OpenTextExample",
-		FileFilters: []cfd.FileFilter{
+		FileFilters: []cfd2.FileFilter{
 			{
 				DisplayName: "Text Files (*.txt)",
 				Pattern:     "*.txt",

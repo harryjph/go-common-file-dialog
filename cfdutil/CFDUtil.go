@@ -2,15 +2,12 @@
 
 package cfdutil
 
-import . "github.com/harry1453/go-common-file-dialog"
+import (
+	"github.com/harry1453/go-common-file-dialog/cfd"
+)
 
-func ShowOpenFileDialog(config DialogConfig) (string, error) {
-	if err := Initialize(); err != nil {
-		return "", err
-	}
-	defer UnInitialize()
-
-	openDialog, err := NewOpenFileDialog(config)
+func ShowOpenFileDialog(config cfd.DialogConfig) (string, error) {
+	openDialog, err := cfd.NewOpenFileDialog(config)
 	if err != nil {
 		return "", err
 	}
@@ -18,13 +15,8 @@ func ShowOpenFileDialog(config DialogConfig) (string, error) {
 	return openDialog.ShowAndGet()
 }
 
-func ShowOpenMultipleFilesDialog(config DialogConfig) ([]string, error) {
-	if err := Initialize(); err != nil {
-		return nil, err
-	}
-	defer UnInitialize()
-
-	openDialog, err := NewOpenMultipleFileDialog(config)
+func ShowOpenMultipleFilesDialog(config cfd.DialogConfig) ([]string, error) {
+	openDialog, err := cfd.NewOpenMultipleFileDialog(config)
 	if err != nil {
 		return nil, err
 	}
@@ -32,13 +24,8 @@ func ShowOpenMultipleFilesDialog(config DialogConfig) ([]string, error) {
 	return openDialog.ShowAndGetAll()
 }
 
-func ShowPickFolderDialog(config DialogConfig) (string, error) {
-	if err := Initialize(); err != nil {
-		return "", err
-	}
-	defer UnInitialize()
-
-	openDialog, err := NewPickFolderDialog(config)
+func ShowPickFolderDialog(config cfd.DialogConfig) (string, error) {
+	openDialog, err := cfd.NewPickFolderDialog(config)
 	if err != nil {
 		return "", err
 	}
@@ -46,13 +33,8 @@ func ShowPickFolderDialog(config DialogConfig) (string, error) {
 	return openDialog.ShowAndGet()
 }
 
-func ShowSaveFileDialog(config DialogConfig) (string, error) {
-	if err := Initialize(); err != nil {
-		return "", err
-	}
-	defer UnInitialize()
-
-	saveDialog, err := NewSaveFileDialog(config)
+func ShowSaveFileDialog(config cfd.DialogConfig) (string, error) {
+	saveDialog, err := cfd.NewSaveFileDialog(config)
 	if err != nil {
 		return "", err
 	}

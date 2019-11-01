@@ -2,12 +2,15 @@
 
 package cfd
 
+import "github.com/go-ole/go-ole"
+
+func Initialize() {
+	// Swallow error
+	_ := ole.CoInitializeEx(0, ole.COINIT_APARTMENTTHREADED|ole.COINIT_DISABLE_OLE1DDE)
+}
+
 func NewOpenFileDialog(config DialogConfig) (Dialog, error) {
-	if !initialized {
-		if err := Initialize(); err != nil {
-			return nil, err
-		}
-	}
+	Initialize()
 
 	openDialog, err := newIFileOpenDialog()
 	if err != nil {
@@ -21,11 +24,7 @@ func NewOpenFileDialog(config DialogConfig) (Dialog, error) {
 }
 
 func NewOpenMultipleFileDialog(config DialogConfig) (OpenMultipleDialog, error) {
-	if !initialized {
-		if err := Initialize(); err != nil {
-			return nil, err
-		}
-	}
+	Initialize()
 
 	openDialog, err := newIFileOpenDialog()
 	if err != nil {
@@ -43,11 +42,7 @@ func NewOpenMultipleFileDialog(config DialogConfig) (OpenMultipleDialog, error) 
 }
 
 func NewPickFolderDialog(config DialogConfig) (Dialog, error) {
-	if !initialized {
-		if err := Initialize(); err != nil {
-			return nil, err
-		}
-	}
+	Initialize()
 
 	openDialog, err := newIFileOpenDialog()
 	if err != nil {
@@ -65,11 +60,7 @@ func NewPickFolderDialog(config DialogConfig) (Dialog, error) {
 }
 
 func NewSaveFileDialog(config DialogConfig) (Dialog, error) {
-	if !initialized {
-		if err := Initialize(); err != nil {
-			return nil, err
-		}
-	}
+	Initialize()
 
 	saveDialog, err := newIFileSaveDialog()
 	if err != nil {

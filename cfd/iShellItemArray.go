@@ -1,6 +1,7 @@
 package cfd
 
 import (
+	"fmt"
 	"syscall"
 	"unsafe"
 )
@@ -44,7 +45,9 @@ func (vtbl *iShellItemArrayVtbl) getItemAt(objPtr unsafe.Pointer, index uintptr)
 	if err := hresultToError(ret); err != nil {
 		return "", err
 	}
-	// TODO nil check on shellItem
+	if shellItem == nil {
+		return "", fmt.Errorf("ShellItem was nil")
+	}
 	defer shellItem.vtbl.release(unsafe.Pointer(shellItem))
 	return shellItem.vtbl.getDisplayName(unsafe.Pointer(shellItem))
 }
