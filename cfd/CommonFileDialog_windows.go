@@ -6,7 +6,7 @@ import "github.com/go-ole/go-ole"
 
 func Initialize() {
 	// Swallow error
-	_ := ole.CoInitializeEx(0, ole.COINIT_APARTMENTTHREADED|ole.COINIT_DISABLE_OLE1DDE)
+	_ = ole.CoInitializeEx(0, ole.COINIT_APARTMENTTHREADED|ole.COINIT_DISABLE_OLE1DDE)
 }
 
 func NewOpenFileDialog(config DialogConfig) (Dialog, error) {

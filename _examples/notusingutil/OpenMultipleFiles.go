@@ -7,8 +7,8 @@ import (
 
 func main() {
 	openMultiDialog, err := cfd.NewOpenMultipleFileDialog(cfd.DialogConfig{
-		Title: "Open Text File",
-		Role:  "OpenTextExample",
+		Title: "Open Multiple Files",
+		Role:  "OpenFilesExample",
 		FileFilters: []cfd.FileFilter{
 			{
 				DisplayName: "Text Files (*.txt)",
