@@ -15,7 +15,7 @@ type DialogConfig struct {
 	// The role of the dialog. This is used to derive the dialog's GUID, which the
 	// OS will use to differentiate it from dialogs that are intended for other purposes.
 	// This means that, for example, a dialog with role "Import" will have a different
-	// previous location that it will open to than a dialog with role "Save". Can be any
+	// previous location that it will open to than a dialog with role "Open". Can be any
 	// string.
 	Role string
 	// The default folder - the folder that is used the first time the user opens it
