@@ -46,7 +46,7 @@ func (vtbl *iShellItemArrayVtbl) getItemAt(objPtr unsafe.Pointer, index uintptr)
 		return "", err
 	}
 	if shellItem == nil {
-		return "", fmt.Errorf("ShellItem was nil")
+		return "", fmt.Errorf("nothing selected")
 	}
 	defer shellItem.vtbl.release(unsafe.Pointer(shellItem))
 	return shellItem.vtbl.getDisplayName(unsafe.Pointer(shellItem))
