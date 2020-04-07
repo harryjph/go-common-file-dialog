@@ -86,7 +86,7 @@ func (fileOpenDialog *iFileOpenDialog) SetRole(role string) error {
 // This should only be callable when the user asks for a multi select because
 // otherwise they will be given the Dialog interface which does not expose this function.
 func (fileOpenDialog *iFileOpenDialog) GetResults() ([]string, error) {
-	return fileOpenDialog.vtbl.getResults(unsafe.Pointer(fileOpenDialog))
+	return fileOpenDialog.vtbl.getResultsStrings(unsafe.Pointer(fileOpenDialog))
 }
 
 func (fileOpenDialog *iFileOpenDialog) setPickFolders(pickFolders bool) error {
@@ -107,14 +107,19 @@ func (fileOpenDialog *iFileOpenDialog) setIsMultiselect(isMultiSelect bool) erro
 	}
 }
 
-func (vtbl *iFileOpenDialogVtbl) getResults(objPtr unsafe.Pointer) ([]string, error) {
+func (vtbl *iFileOpenDialogVtbl) getResults(objPtr unsafe.Pointer) (*iShellItemArray, error) {
 	var shellItemArray *iShellItemArray
 	ret, _, _ := syscall.Syscall(vtbl.GetResults,
 		1,
 		uintptr(objPtr),
 		uintptr(unsafe.Pointer(&shellItemArray)),
 		0)
-	if err := hresultToError(ret); err != nil {
+	return shellItemArray, hresultToError(ret)
+}
+
+func (vtbl *iFileOpenDialogVtbl) getResultsStrings(objPtr unsafe.Pointer) ([]string, error) {
+	shellItemArray, err := vtbl.getResults(objPtr)
+	if err != nil {
 		return nil, err
 	}
 	if shellItemArray == nil {

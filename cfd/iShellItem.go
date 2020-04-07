@@ -13,14 +13,12 @@ const (
 )
 
 var (
-	shell32                         *syscall.LazyDLL
 	procSHCreateItemFromParsingName *syscall.LazyProc
 	iidShellItem                    *ole.GUID
 )
 
 func init() {
-	shell32 = syscall.NewLazyDLL("Shell32.dll")
-	procSHCreateItemFromParsingName = shell32.NewProc("SHCreateItemFromParsingName")
+	procSHCreateItemFromParsingName = syscall.NewLazyDLL("Shell32.dll").NewProc("SHCreateItemFromParsingName")
 	iidShellItem, _ = ole.IIDFromString(iidShellItemGUID) // TODO handle error
 }
 
@@ -40,7 +38,6 @@ type iShellItemVtbl struct {
 func newIShellItem(path string) (*iShellItem, error) {
 	var shellItem *iShellItem
 	pathPtr := ole.SysAllocString(path)
-	defer ole.CoTaskMemFree(uintptr(unsafe.Pointer(pathPtr)))
 	ret, _, _ := procSHCreateItemFromParsingName.Call(
 		uintptr(unsafe.Pointer(pathPtr)),
 		0,
