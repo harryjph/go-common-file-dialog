@@ -19,6 +19,10 @@ func main() {
 				DisplayName: "Image Files (*.jpg, *.png)",
 				Pattern:     "*.jpg;*.png",
 			},
+			{
+				DisplayName: "All Files (*.*)",
+				Pattern:     "*.*",
+			},
 		},
 	})
 	if err != nil {
