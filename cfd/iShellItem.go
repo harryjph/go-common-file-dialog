@@ -10,12 +10,8 @@ import (
 
 var (
 	procSHCreateItemFromParsingName = syscall.NewLazyDLL("Shell32.dll").NewProc("SHCreateItemFromParsingName")
-	iidShellItem                    *ole.GUID
+	iidShellItem                    = ole.NewGUID("43826d1e-e718-42ee-bc55-a1e261c37bfe")
 )
-
-func init() {
-	iidShellItem, _ = ole.IIDFromString("43826d1e-e718-42ee-bc55-a1e261c37bfe")
-}
 
 type iShellItem struct {
 	vtbl *iShellItemVtbl
