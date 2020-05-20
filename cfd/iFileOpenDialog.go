@@ -38,14 +38,14 @@ func (fileOpenDialog *iFileOpenDialog) Show() error {
 	return fileOpenDialog.vtbl.show(unsafe.Pointer(fileOpenDialog))
 }
 
-func (fileOpenDialog *iFileOpenDialog) ShowAndGet() (string, error) {
+func (fileOpenDialog *iFileOpenDialog) ShowAndGetResult() (string, error) {
 	if err := fileOpenDialog.Show(); err != nil {
 		return "", err
 	}
 	return fileOpenDialog.GetResult()
 }
 
-func (fileOpenDialog *iFileOpenDialog) ShowAndGetAll() ([]string, error) {
+func (fileOpenDialog *iFileOpenDialog) ShowAndGetResults() ([]string, error) {
 	if err := fileOpenDialog.Show(); err != nil {
 		return nil, err
 	}
@@ -76,7 +76,7 @@ func (fileOpenDialog *iFileOpenDialog) SetInitialFolder(defaultFolderPath string
 	return fileOpenDialog.vtbl.setFolder(unsafe.Pointer(fileOpenDialog), defaultFolderPath)
 }
 
-func (fileOpenDialog *iFileOpenDialog) SetFileFilter(filter []FileFilter) error {
+func (fileOpenDialog *iFileOpenDialog) SetFileFilters(filter []FileFilter) error {
 	return fileOpenDialog.vtbl.setFileTypes(unsafe.Pointer(fileOpenDialog), filter)
 }
 
@@ -88,6 +88,18 @@ func (fileOpenDialog *iFileOpenDialog) SetRole(role string) error {
 // otherwise they will be given the Dialog interface which does not expose this function.
 func (fileOpenDialog *iFileOpenDialog) GetResults() ([]string, error) {
 	return fileOpenDialog.vtbl.getResultsStrings(unsafe.Pointer(fileOpenDialog))
+}
+
+func (fileOpenDialog *iFileOpenDialog) SetDefaultExtension(defaultExtension string) error {
+	return fileOpenDialog.vtbl.setDefaultExtension(unsafe.Pointer(fileOpenDialog), defaultExtension)
+}
+
+func (fileOpenDialog *iFileOpenDialog) SetFileName(initialFileName string) error {
+	return fileOpenDialog.vtbl.setFileName(unsafe.Pointer(fileOpenDialog), initialFileName)
+}
+
+func (fileOpenDialog *iFileOpenDialog) SetSelectedFileFilterIndex(index uint) error {
+	return fileOpenDialog.vtbl.setSelectedFileFilterIndex(unsafe.Pointer(fileOpenDialog), index)
 }
 
 func (fileOpenDialog *iFileOpenDialog) setPickFolders(pickFolders bool) error {

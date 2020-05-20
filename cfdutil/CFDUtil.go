@@ -7,37 +7,37 @@ import (
 )
 
 func ShowOpenFileDialog(config cfd.DialogConfig) (string, error) {
-	openDialog, err := cfd.NewOpenFileDialog(config)
+	dialog, err := cfd.NewOpenFileDialog(config)
 	if err != nil {
 		return "", err
 	}
-	defer openDialog.Release()
-	return openDialog.ShowAndGet()
+	defer dialog.Release()
+	return dialog.ShowAndGetResult()
 }
 
 func ShowOpenMultipleFilesDialog(config cfd.DialogConfig) ([]string, error) {
-	openDialog, err := cfd.NewOpenMultipleFilesDialog(config)
+	dialog, err := cfd.NewOpenMultipleFilesDialog(config)
 	if err != nil {
 		return nil, err
 	}
-	defer openDialog.Release()
-	return openDialog.ShowAndGetAll()
+	defer dialog.Release()
+	return dialog.ShowAndGetResults()
 }
 
 func ShowPickFolderDialog(config cfd.DialogConfig) (string, error) {
-	openDialog, err := cfd.NewPickFolderDialog(config)
+	dialog, err := cfd.NewSelectFolderDialog(config)
 	if err != nil {
 		return "", err
 	}
-	defer openDialog.Release()
-	return openDialog.ShowAndGet()
+	defer dialog.Release()
+	return dialog.ShowAndGetResult()
 }
 
 func ShowSaveFileDialog(config cfd.DialogConfig) (string, error) {
-	saveDialog, err := cfd.NewSaveFileDialog(config)
+	dialog, err := cfd.NewSaveFileDialog(config)
 	if err != nil {
 		return "", err
 	}
-	defer saveDialog.Release()
-	return saveDialog.ShowAndGet()
+	defer dialog.Release()
+	return dialog.ShowAndGetResult()
 }

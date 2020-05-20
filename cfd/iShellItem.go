@@ -8,18 +8,13 @@ import (
 	"unsafe"
 )
 
-const (
-	iidShellItemGUID = "{43826d1e-e718-42ee-bc55-a1e261c37bfe}"
-)
-
 var (
-	procSHCreateItemFromParsingName *syscall.LazyProc
+	procSHCreateItemFromParsingName = syscall.NewLazyDLL("Shell32.dll").NewProc("SHCreateItemFromParsingName")
 	iidShellItem                    *ole.GUID
 )
 
 func init() {
-	procSHCreateItemFromParsingName = syscall.NewLazyDLL("Shell32.dll").NewProc("SHCreateItemFromParsingName")
-	iidShellItem, _ = ole.IIDFromString(iidShellItemGUID) // TODO handle error
+	iidShellItem, _ = ole.IIDFromString("43826d1e-e718-42ee-bc55-a1e261c37bfe")
 }
 
 type iShellItem struct {

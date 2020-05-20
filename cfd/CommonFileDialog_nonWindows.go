@@ -6,18 +6,18 @@ import "fmt"
 
 var unsupportedError = fmt.Errorf("common file dialogs are only available on windows")
 
-func NewOpenFileDialog(config DialogConfig) (Dialog, error) {
+func NewOpenFileDialog(config DialogConfig) (OpenFileDialog, error) {
 	return nil, unsupportedError
 }
 
-func NewOpenMultipleFilesDialog(config DialogConfig) (OpenMultipleDialog, error) {
+func NewOpenMultipleFilesDialog(config DialogConfig) (OpenMultipleFilesDialog, error) {
 	return nil, unsupportedError
 }
 
-func NewPickFolderDialog(config DialogConfig) (Dialog, error) {
+func NewSelectFolderDialog(config DialogConfig) (SelectFolderDialog, error) {
 	return nil, unsupportedError
 }
 
-func NewSaveFileDialog(config DialogConfig) (Dialog, error) {
+func NewSaveFileDialog(config DialogConfig) (SaveFileDialog, error) {
 	return nil, unsupportedError
 }

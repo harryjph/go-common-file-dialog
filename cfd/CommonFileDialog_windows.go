@@ -9,7 +9,7 @@ func Initialize() {
 	_ = ole.CoInitializeEx(0, ole.COINIT_APARTMENTTHREADED|ole.COINIT_DISABLE_OLE1DDE)
 }
 
-func NewOpenFileDialog(config DialogConfig) (Dialog, error) {
+func NewOpenFileDialog(config DialogConfig) (OpenFileDialog, error) {
 	Initialize()
 
 	openDialog, err := newIFileOpenDialog()
@@ -23,7 +23,7 @@ func NewOpenFileDialog(config DialogConfig) (Dialog, error) {
 	return openDialog, nil
 }
 
-func NewOpenMultipleFilesDialog(config DialogConfig) (OpenMultipleDialog, error) {
+func NewOpenMultipleFilesDialog(config DialogConfig) (OpenMultipleFilesDialog, error) {
 	Initialize()
 
 	openDialog, err := newIFileOpenDialog()
@@ -41,7 +41,7 @@ func NewOpenMultipleFilesDialog(config DialogConfig) (OpenMultipleDialog, error)
 	return openDialog, nil
 }
 
-func NewPickFolderDialog(config DialogConfig) (Dialog, error) {
+func NewSelectFolderDialog(config DialogConfig) (SelectFolderDialog, error) {
 	Initialize()
 
 	openDialog, err := newIFileOpenDialog()
@@ -59,7 +59,7 @@ func NewPickFolderDialog(config DialogConfig) (Dialog, error) {
 	return openDialog, nil
 }
 
-func NewSaveFileDialog(config DialogConfig) (Dialog, error) {
+func NewSaveFileDialog(config DialogConfig) (SaveFileDialog, error) {
 	Initialize()
 
 	saveDialog, err := newIFileSaveDialog()

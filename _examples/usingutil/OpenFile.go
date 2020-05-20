@@ -24,6 +24,9 @@ func main() {
 				Pattern:     "*.*",
 			},
 		},
+		SelectedFileFilterIndex: 2,
+		FileName:                "file.txt",
+		DefaultExtension:        "txt",
 	})
 	if err != nil {
 		log.Fatal(err)

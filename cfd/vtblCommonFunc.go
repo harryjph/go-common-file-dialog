@@ -5,6 +5,7 @@ package cfd
 import (
 	"fmt"
 	"github.com/go-ole/go-ole"
+	"strings"
 	"syscall"
 	"unsafe"
 )
@@ -188,6 +189,38 @@ func (vtbl *iFileDialogVtbl) setClientGuid(objPtr unsafe.Pointer, guid *ole.GUID
 		1,
 		uintptr(objPtr),
 		uintptr(unsafe.Pointer(guid)),
+		0)
+	return hresultToError(ret)
+}
+
+func (vtbl *iFileDialogVtbl) setDefaultExtension(objPtr unsafe.Pointer, defaultExtension string) error {
+	if defaultExtension[0] == '.' {
+		defaultExtension = strings.TrimPrefix(defaultExtension, ".")
+	}
+	defaultExtensionPtr := ole.SysAllocString(defaultExtension)
+	ret, _, _ := syscall.Syscall(vtbl.SetDefaultExtension,
+		1,
+		uintptr(objPtr),
+		uintptr(unsafe.Pointer(defaultExtensionPtr)),
+		0)
+	return hresultToError(ret)
+}
+
+func (vtbl *iFileDialogVtbl) setFileName(objPtr unsafe.Pointer, fileName string) error {
+	fileNamePtr := ole.SysAllocString(fileName)
+	ret, _, _ := syscall.Syscall(vtbl.SetFileName,
+		1,
+		uintptr(objPtr),
+		uintptr(unsafe.Pointer(fileNamePtr)),
+		0)
+	return hresultToError(ret)
+}
+
+func (vtbl *iFileDialogVtbl) setSelectedFileFilterIndex(objPtr unsafe.Pointer, index uint) error {
+	ret, _, _ := syscall.Syscall(vtbl.SetFileTypeIndex,
+		1,
+		uintptr(objPtr),
+		uintptr(index+1), // SetFileTypeIndex counts from 1
 		0)
 	return hresultToError(ret)
 }

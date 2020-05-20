@@ -21,7 +21,7 @@ type iModalWindowVtbl struct {
 type iFileDialogVtbl struct {
 	iModalWindowVtbl
 	SetFileTypes        uintptr // func (cFileTypes UINT, rgFilterSpec *COMDLG_FILTERSPEC) HRESULT
-	SetFileTypeIndex    uintptr
+	SetFileTypeIndex    uintptr // func(iFileType UINT) HRESULT
 	GetFileTypeIndex    uintptr
 	Advise              uintptr
 	Unadvise            uintptr
@@ -31,14 +31,14 @@ type iFileDialogVtbl struct {
 	SetFolder           uintptr // func (psi *IShellItem) HRESULT
 	GetFolder           uintptr
 	GetCurrentSelection uintptr
-	SetFileName         uintptr
+	SetFileName         uintptr // func (pszName LPCWSTR) HRESULT
 	GetFileName         uintptr
 	SetTitle            uintptr // func(pszTitle LPCWSTR) HRESULT
 	SetOkButtonLabel    uintptr
 	SetFileNameLabel    uintptr
 	GetResult           uintptr // func (ppsi **IShellItem) HRESULT
 	AddPlace            uintptr
-	SetDefaultExtension uintptr
+	SetDefaultExtension uintptr // func (pszDefaultExtension LPCWSTR) HRESULT
 	Close               uintptr // func (hr HRESULT) HRESULT
 	SetClientGuid       uintptr // func (guid REFGUID) HRESULT
 	ClearClientData     uintptr

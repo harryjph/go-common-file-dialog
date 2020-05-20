@@ -26,8 +26,20 @@ type DialogConfig struct {
 	// the dialog will always open to this folder.
 	InitialFolder string
 	// The file filters that restrict which types of files the dialog is able to choose.
-	// Ignored by Folder Picker.
+	// Ignored by Select Folder Dialog.
 	FileFilters []FileFilter
+	// Sets the initially selected file filter. This is an index of FileFilters.
+	// Ignored by Select Folder Dialog.
+	SelectedFileFilterIndex uint
+	// The initial name of the file (I.E. the text in the file name text box) when the user opens the dialog.
+	// For the Select Folder Dialog, this sets the initial folder name.
+	FileName string
+	// The default extension applied when a user does not provide one as part of the file name.
+	// If the user selects a different file filter, the default extension will be automatically updated to match the new file filter.
+	// For Open (Multiple) File Dialog, this only has an effect when the user specifies a file name with no extension and a file with the default extension exists.
+	// For Save File Dialog, this extension will be used whenever a user does not specify an extension.
+	// Ignored by Select Folder Dialog.
+	DefaultExtension string
 }
 
 var defaultFilters = []FileFilter{
@@ -37,42 +49,68 @@ var defaultFilters = []FileFilter{
 	},
 }
 
-func (config *DialogConfig) apply(dialog Dialog) error {
-	var err error
+func (config *DialogConfig) apply(dialog Dialog) (err error) {
 	if config.Role != "" {
 		err = dialog.SetTitle(config.Title)
 		if err != nil {
-			return err
+			return
 		}
 	}
+
 	if config.Role != "" {
 		err = dialog.SetRole(config.Role)
 		if err != nil {
-			return err
+			return
 		}
 	}
+
 	if config.InitialFolder != "" {
 		err = dialog.SetInitialFolder(config.InitialFolder)
 		if err != nil {
-			return err
+			return
 		}
 	}
+
 	if config.DefaultFolder != "" {
 		err = dialog.SetDefaultFolder(config.DefaultFolder)
 		if err != nil {
-			return err
+			return
 		}
 	}
-	var fileFilters []FileFilter
 
-	if config.FileFilters != nil && len(config.FileFilters) > 0 {
-		fileFilters = config.FileFilters
-	} else {
-		fileFilters = defaultFilters
+	if config.FileName != "" {
+		err = dialog.SetFileName(config.FileName)
+		if err != nil {
+			return
+		}
 	}
-	err = dialog.SetFileFilter(fileFilters)
-	if err != nil {
-		return err
+
+	if dialog, ok := dialog.(FileDialog); ok {
+		var fileFilters []FileFilter
+		if config.FileFilters != nil && len(config.FileFilters) > 0 {
+			fileFilters = config.FileFilters
+		} else {
+			fileFilters = defaultFilters
+		}
+		err = dialog.SetFileFilters(fileFilters)
+		if err != nil {
+			return
+		}
+
+		if config.SelectedFileFilterIndex != 0 {
+			err = dialog.SetSelectedFileFilterIndex(config.SelectedFileFilterIndex)
+			if err != nil {
+				return
+			}
+		}
+
+		if config.DefaultExtension != "" {
+			err = dialog.SetDefaultExtension(config.DefaultExtension)
+			if err != nil {
+				return
+			}
+		}
 	}
-	return nil
+
+	return
 }

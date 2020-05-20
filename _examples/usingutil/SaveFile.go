@@ -24,6 +24,9 @@ func main() {
 				Pattern:     "*.*",
 			},
 		},
+		SelectedFileFilterIndex: 1,
+		FileName:                "image.jpg",
+		DefaultExtension:        "jpg",
 	})
 	if err != nil {
 		log.Fatal(err)

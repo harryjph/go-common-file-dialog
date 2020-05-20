@@ -39,7 +39,7 @@ func (fileSaveDialog *iFileSaveDialog) Show() error {
 	return fileSaveDialog.vtbl.show(unsafe.Pointer(fileSaveDialog))
 }
 
-func (fileSaveDialog *iFileSaveDialog) ShowAndGet() (string, error) {
+func (fileSaveDialog *iFileSaveDialog) ShowAndGetResult() (string, error) {
 	if err := fileSaveDialog.Show(); err != nil {
 		return "", err
 	}
@@ -70,10 +70,22 @@ func (fileSaveDialog *iFileSaveDialog) SetInitialFolder(defaultFolderPath string
 	return fileSaveDialog.vtbl.setFolder(unsafe.Pointer(fileSaveDialog), defaultFolderPath)
 }
 
-func (fileSaveDialog *iFileSaveDialog) SetFileFilter(filter []FileFilter) error {
+func (fileSaveDialog *iFileSaveDialog) SetFileFilters(filter []FileFilter) error {
 	return fileSaveDialog.vtbl.setFileTypes(unsafe.Pointer(fileSaveDialog), filter)
 }
 
 func (fileSaveDialog *iFileSaveDialog) SetRole(role string) error {
 	return fileSaveDialog.vtbl.setClientGuid(unsafe.Pointer(fileSaveDialog), util.StringToUUID(role))
+}
+
+func (fileSaveDialog *iFileSaveDialog) SetDefaultExtension(defaultExtension string) error {
+	return fileSaveDialog.vtbl.setDefaultExtension(unsafe.Pointer(fileSaveDialog), defaultExtension)
+}
+
+func (fileSaveDialog *iFileSaveDialog) SetFileName(initialFileName string) error {
+	return fileSaveDialog.vtbl.setFileName(unsafe.Pointer(fileSaveDialog), initialFileName)
+}
+
+func (fileSaveDialog *iFileSaveDialog) SetSelectedFileFilterIndex(index uint) error {
+	return fileSaveDialog.vtbl.setSelectedFileFilterIndex(unsafe.Pointer(fileSaveDialog), index)
 }
