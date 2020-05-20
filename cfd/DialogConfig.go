@@ -15,8 +15,7 @@ type DialogConfig struct {
 	// The role of the dialog. This is used to derive the dialog's GUID, which the
 	// OS will use to differentiate it from dialogs that are intended for other purposes.
 	// This means that, for example, a dialog with role "Import" will have a different
-	// previous location that it will open to than a dialog with role "Open". Can be any
-	// string.
+	// previous location that it will open to than a dialog with role "Open". Can be any string.
 	Role string
 	// The default folder - the folder that is used the first time the user opens it
 	// (after the first time their last used location is used).
@@ -24,7 +23,7 @@ type DialogConfig struct {
 	// The initial folder - the folder that the dialog always opens to if not empty.
 	// If this is not empty, it will override the "default folder" behaviour and
 	// the dialog will always open to this folder.
-	InitialFolder string
+	Folder string
 	// The file filters that restrict which types of files the dialog is able to choose.
 	// Ignored by Select Folder Dialog.
 	FileFilters []FileFilter
@@ -36,7 +35,7 @@ type DialogConfig struct {
 	FileName string
 	// The default extension applied when a user does not provide one as part of the file name.
 	// If the user selects a different file filter, the default extension will be automatically updated to match the new file filter.
-	// For Open (Multiple) File Dialog, this only has an effect when the user specifies a file name with no extension and a file with the default extension exists.
+	// For Open / Open Multiple File Dialog, this only has an effect when the user specifies a file name with no extension and a file with the default extension exists.
 	// For Save File Dialog, this extension will be used whenever a user does not specify an extension.
 	// Ignored by Select Folder Dialog.
 	DefaultExtension string
@@ -64,8 +63,8 @@ func (config *DialogConfig) apply(dialog Dialog) (err error) {
 		}
 	}
 
-	if config.InitialFolder != "" {
-		err = dialog.SetInitialFolder(config.InitialFolder)
+	if config.Folder != "" {
+		err = dialog.SetFolder(config.Folder)
 		if err != nil {
 			return
 		}

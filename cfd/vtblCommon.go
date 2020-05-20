@@ -39,8 +39,9 @@ type iFileDialogVtbl struct {
 	GetResult           uintptr // func (ppsi **IShellItem) HRESULT
 	AddPlace            uintptr
 	SetDefaultExtension uintptr // func (pszDefaultExtension LPCWSTR) HRESULT
-	Close               uintptr // func (hr HRESULT) HRESULT
-	SetClientGuid       uintptr // func (guid REFGUID) HRESULT
-	ClearClientData     uintptr
-	SetFilter           uintptr
+	// This can only be used from a callback.
+	Close           uintptr
+	SetClientGuid   uintptr // func (guid REFGUID) HRESULT
+	ClearClientData uintptr
+	SetFilter       uintptr
 }

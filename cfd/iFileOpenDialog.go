@@ -3,6 +3,7 @@
 package cfd
 
 import (
+	"errors"
 	"fmt"
 	"github.com/go-ole/go-ole"
 	"github.com/harry1453/go-common-file-dialog/util"
@@ -39,6 +40,13 @@ func (fileOpenDialog *iFileOpenDialog) Show() error {
 }
 
 func (fileOpenDialog *iFileOpenDialog) ShowAndGetResult() (string, error) {
+	isMultiselect, err := fileOpenDialog.isMultiselect()
+	if err != nil {
+		return "", err
+	}
+	if isMultiselect {
+		return "", errors.New("use ShowAndGetResults for open multiple files dialog") // TODO don't repeat usages of errors.New
+	}
 	if err := fileOpenDialog.Show(); err != nil {
 		return "", err
 	}
@@ -52,15 +60,18 @@ func (fileOpenDialog *iFileOpenDialog) ShowAndGetResults() ([]string, error) {
 	return fileOpenDialog.GetResults()
 }
 
-func (fileOpenDialog *iFileOpenDialog) Close() error {
-	return fileOpenDialog.vtbl.close(unsafe.Pointer(fileOpenDialog))
-}
-
 func (fileOpenDialog *iFileOpenDialog) SetTitle(title string) error {
 	return fileOpenDialog.vtbl.setTitle(unsafe.Pointer(fileOpenDialog), title)
 }
 
 func (fileOpenDialog *iFileOpenDialog) GetResult() (string, error) {
+	isMultiselect, err := fileOpenDialog.isMultiselect()
+	if err != nil {
+		return "", err
+	}
+	if isMultiselect {
+		return "", errors.New("use GetResults for open multiple files dialog")
+	}
 	return fileOpenDialog.vtbl.getResultString(unsafe.Pointer(fileOpenDialog))
 }
 
@@ -72,7 +83,7 @@ func (fileOpenDialog *iFileOpenDialog) SetDefaultFolder(defaultFolderPath string
 	return fileOpenDialog.vtbl.setDefaultFolder(unsafe.Pointer(fileOpenDialog), defaultFolderPath)
 }
 
-func (fileOpenDialog *iFileOpenDialog) SetInitialFolder(defaultFolderPath string) error {
+func (fileOpenDialog *iFileOpenDialog) SetFolder(defaultFolderPath string) error {
 	return fileOpenDialog.vtbl.setFolder(unsafe.Pointer(fileOpenDialog), defaultFolderPath)
 }
 
@@ -111,9 +122,18 @@ func (fileOpenDialog *iFileOpenDialog) setPickFolders(pickFolders bool) error {
 	}
 }
 
-func (fileOpenDialog *iFileOpenDialog) setIsMultiselect(isMultiSelect bool) error {
-	const FosAllowMultiselect = 0x200
-	if isMultiSelect {
+const FosAllowMultiselect = 0x200
+
+func (fileOpenDialog *iFileOpenDialog) isMultiselect() (bool, error) {
+	options, err := fileOpenDialog.vtbl.getOptions(unsafe.Pointer(fileOpenDialog))
+	if err != nil {
+		return false, err
+	}
+	return options&FosAllowMultiselect != 0, nil
+}
+
+func (fileOpenDialog *iFileOpenDialog) setIsMultiselect(isMultiselect bool) error {
+	if isMultiselect {
 		return fileOpenDialog.vtbl.addOption(unsafe.Pointer(fileOpenDialog), FosAllowMultiselect)
 	} else {
 		return fileOpenDialog.vtbl.removeOption(unsafe.Pointer(fileOpenDialog), FosAllowMultiselect)
@@ -136,7 +156,7 @@ func (vtbl *iFileOpenDialogVtbl) getResultsStrings(objPtr unsafe.Pointer) ([]str
 		return nil, err
 	}
 	if shellItemArray == nil {
-		return nil, fmt.Errorf("ShellItemArray was nil")
+		return nil, fmt.Errorf("cancelled by user")
 	}
 	defer shellItemArray.vtbl.release(unsafe.Pointer(shellItemArray))
 	count, err := shellItemArray.vtbl.getCount(unsafe.Pointer(shellItemArray))

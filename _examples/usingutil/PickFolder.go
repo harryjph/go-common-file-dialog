@@ -8,9 +8,9 @@ import (
 
 func main() {
 	result, err := cfdutil.ShowPickFolderDialog(cfd.DialogConfig{
-		Title:         "Pick Folder",
-		Role:          "PickFolderExample",
-		InitialFolder: "C:\\",
+		Title:  "Pick Folder",
+		Role:   "PickFolderExample",
+		Folder: "C:\\",
 	})
 	if err != nil {
 		log.Fatal(err)

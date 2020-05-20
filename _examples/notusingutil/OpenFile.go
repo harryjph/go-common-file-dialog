@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/harry1453/go-common-file-dialog/cfd"
 	"log"
+	"time"
 )
 
 func main() {
@@ -30,6 +31,12 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	go func() {
+		time.Sleep(time.Second)
+		if err := openDialog.SetFileName("bruh"); err != nil {
+			panic(err)
+		}
+	}()
 	if err := openDialog.Show(); err != nil {
 		log.Fatal(err)
 	}

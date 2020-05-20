@@ -46,10 +46,6 @@ func (fileSaveDialog *iFileSaveDialog) ShowAndGetResult() (string, error) {
 	return fileSaveDialog.GetResult()
 }
 
-func (fileSaveDialog *iFileSaveDialog) Close() error {
-	return fileSaveDialog.vtbl.close(unsafe.Pointer(fileSaveDialog))
-}
-
 func (fileSaveDialog *iFileSaveDialog) SetTitle(title string) error {
 	return fileSaveDialog.vtbl.setTitle(unsafe.Pointer(fileSaveDialog), title)
 }
@@ -66,7 +62,7 @@ func (fileSaveDialog *iFileSaveDialog) SetDefaultFolder(defaultFolderPath string
 	return fileSaveDialog.vtbl.setDefaultFolder(unsafe.Pointer(fileSaveDialog), defaultFolderPath)
 }
 
-func (fileSaveDialog *iFileSaveDialog) SetInitialFolder(defaultFolderPath string) error {
+func (fileSaveDialog *iFileSaveDialog) SetFolder(defaultFolderPath string) error {
 	return fileSaveDialog.vtbl.setFolder(unsafe.Pointer(fileSaveDialog), defaultFolderPath)
 }
 
