@@ -4,14 +4,15 @@ package cfd
 
 import (
 	"fmt"
-	"github.com/go-ole/go-ole/oleutil"
+	"github.com/go-ole/go-ole"
 	"github.com/harry1453/go-common-file-dialog/util"
 	"syscall"
 	"unsafe"
 )
 
-const (
-	fileOpenDialogCLSID = "{DC1C5A9C-E88A-4dde-A5A1-60F82A20AEF7}"
+var (
+	fileOpenDialogCLSID = ole.NewGUID("{DC1C5A9C-E88A-4dde-A5A1-60F82A20AEF7}")
+	fileOpenDialogIID   = ole.NewGUID("{d57c7288-d4ad-4768-be02-9d969532d960}")
 )
 
 type iFileOpenDialog struct {
@@ -26,7 +27,7 @@ type iFileOpenDialogVtbl struct {
 }
 
 func newIFileOpenDialog() (*iFileOpenDialog, error) {
-	if unknown, err := oleutil.CreateObject(fileOpenDialogCLSID); err == nil {
+	if unknown, err := ole.CreateInstance(fileOpenDialogCLSID, fileOpenDialogIID); err == nil {
 		return (*iFileOpenDialog)(unsafe.Pointer(unknown)), nil
 	} else {
 		return nil, err

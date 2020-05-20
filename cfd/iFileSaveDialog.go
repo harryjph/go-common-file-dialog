@@ -3,13 +3,14 @@
 package cfd
 
 import (
-	"github.com/go-ole/go-ole/oleutil"
+	"github.com/go-ole/go-ole"
 	"github.com/harry1453/go-common-file-dialog/util"
 	"unsafe"
 )
 
-const (
-	saveFileDialogCLSID = "{C0B4E2F3-BA21-4773-8DBA-335EC946EB8B}"
+var (
+	saveFileDialogCLSID = ole.NewGUID("{C0B4E2F3-BA21-4773-8DBA-335EC946EB8B}")
+	saveFileDialogIID   = ole.NewGUID("{84bccd23-5fde-4cdb-aea4-af64b83d78ab}")
 )
 
 type iFileSaveDialog struct {
@@ -27,7 +28,7 @@ type iFileSaveDialogVtbl struct {
 }
 
 func newIFileSaveDialog() (*iFileSaveDialog, error) {
-	if unknown, err := oleutil.CreateObject(saveFileDialogCLSID); err == nil {
+	if unknown, err := ole.CreateInstance(saveFileDialogCLSID, saveFileDialogIID); err == nil {
 		return (*iFileSaveDialog)(unsafe.Pointer(unknown)), nil
 	} else {
 		return nil, err
