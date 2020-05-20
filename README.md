@@ -12,11 +12,9 @@ This library is available under the MIT license.
 
 Currently supported features:
 * Open File Dialog (to open a single file)
+* Open Multiple Files Dialog (to open multiple files)
 * Open Folder Dialog
 * Save File Dialog
 * Dialog "roles" to allow Windows to remember different "last locations" for different types of dialog
 * Set dialog Title, Default Folder and Initial Folder
 * Set dialog File Filters
-
-Work in progress (Does not currently work!)
-* Open File Dialog (to open multiple files)

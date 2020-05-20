@@ -23,7 +23,7 @@ func NewOpenFileDialog(config DialogConfig) (Dialog, error) {
 	return openDialog, nil
 }
 
-func NewOpenMultipleFileDialog(config DialogConfig) (OpenMultipleDialog, error) {
+func NewOpenMultipleFilesDialog(config DialogConfig) (OpenMultipleDialog, error) {
 	Initialize()
 
 	openDialog, err := newIFileOpenDialog()

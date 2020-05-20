@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	openMultiDialog, err := cfd.NewOpenMultipleFileDialog(cfd.DialogConfig{
+	openMultiDialog, err := cfd.NewOpenMultipleFilesDialog(cfd.DialogConfig{
 		Title: "Open Multiple Files",
 		Role:  "OpenFilesExample",
 		FileFilters: []cfd.FileFilter{
@@ -34,5 +34,5 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println("Chosen files", results)
+	log.Printf("Chosen file(s): %s\n", results)
 }

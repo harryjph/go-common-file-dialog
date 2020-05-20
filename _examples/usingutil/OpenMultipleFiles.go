@@ -28,5 +28,5 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Chosen file: %s\n", results)
+	log.Printf("Chosen file(s): %s\n", results)
 }

@@ -16,7 +16,7 @@ func ShowOpenFileDialog(config cfd.DialogConfig) (string, error) {
 }
 
 func ShowOpenMultipleFilesDialog(config cfd.DialogConfig) ([]string, error) {
-	openDialog, err := cfd.NewOpenMultipleFileDialog(config)
+	openDialog, err := cfd.NewOpenMultipleFilesDialog(config)
 	if err != nil {
 		return nil, err
 	}
