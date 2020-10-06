@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	pickFolderDialog, err := cfd.NewOpenFileDialog(cfd.DialogConfig{
+	pickFolderDialog, err := cfd.NewSelectFolderDialog(cfd.DialogConfig{
 		Title: "Pick Folder",
 		Role:  "PickFolderExample",
 	})
