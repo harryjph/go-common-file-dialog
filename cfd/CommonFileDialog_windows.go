@@ -4,13 +4,14 @@ package cfd
 
 import "github.com/go-ole/go-ole"
 
-func Initialize() {
+func initialize() {
 	// Swallow error
 	_ = ole.CoInitializeEx(0, ole.COINIT_APARTMENTTHREADED|ole.COINIT_DISABLE_OLE1DDE)
 }
 
+// TODO doc
 func NewOpenFileDialog(config DialogConfig) (OpenFileDialog, error) {
-	Initialize()
+	initialize()
 
 	openDialog, err := newIFileOpenDialog()
 	if err != nil {
@@ -23,8 +24,9 @@ func NewOpenFileDialog(config DialogConfig) (OpenFileDialog, error) {
 	return openDialog, nil
 }
 
+// TODO doc
 func NewOpenMultipleFilesDialog(config DialogConfig) (OpenMultipleFilesDialog, error) {
-	Initialize()
+	initialize()
 
 	openDialog, err := newIFileOpenDialog()
 	if err != nil {
@@ -41,8 +43,9 @@ func NewOpenMultipleFilesDialog(config DialogConfig) (OpenMultipleFilesDialog, e
 	return openDialog, nil
 }
 
+// TODO doc
 func NewSelectFolderDialog(config DialogConfig) (SelectFolderDialog, error) {
-	Initialize()
+	initialize()
 
 	openDialog, err := newIFileOpenDialog()
 	if err != nil {
@@ -59,8 +62,9 @@ func NewSelectFolderDialog(config DialogConfig) (SelectFolderDialog, error) {
 	return openDialog, nil
 }
 
+// TODO doc
 func NewSaveFileDialog(config DialogConfig) (SaveFileDialog, error) {
-	Initialize()
+	initialize()
 
 	saveDialog, err := newIFileSaveDialog()
 	if err != nil {
