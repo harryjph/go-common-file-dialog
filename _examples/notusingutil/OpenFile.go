@@ -32,8 +32,8 @@ func main() {
 		log.Fatal(err)
 	}
 	go func() {
-		time.Sleep(time.Second)
-		if err := openDialog.SetFileName("bruh"); err != nil {
+		time.Sleep(2 * time.Second)
+		if err := openDialog.SetFileName("hello world"); err != nil {
 			panic(err)
 		}
 	}()
