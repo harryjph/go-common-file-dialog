@@ -3,8 +3,6 @@
 package cfd
 
 import (
-	"errors"
-	"fmt"
 	"github.com/go-ole/go-ole"
 	"github.com/harry1453/go-common-file-dialog/util"
 	"syscall"
@@ -50,7 +48,8 @@ func (fileOpenDialog *iFileOpenDialog) ShowAndGetResult() (string, error) {
 		return "", err
 	}
 	if isMultiselect {
-		return "", errors.New("use ShowAndGetResults for open multiple files dialog") // TODO don't repeat usages of errors.New
+		// We should panic as this error is caused by the developer using the library
+		panic("use ShowAndGetResults for open multiple files dialog")
 	}
 	if err := fileOpenDialog.Show(); err != nil {
 		return "", err
@@ -59,6 +58,14 @@ func (fileOpenDialog *iFileOpenDialog) ShowAndGetResult() (string, error) {
 }
 
 func (fileOpenDialog *iFileOpenDialog) ShowAndGetResults() ([]string, error) {
+	isMultiselect, err := fileOpenDialog.isMultiselect()
+	if err != nil {
+		return nil, err
+	}
+	if !isMultiselect {
+		// We should panic as this error is caused by the developer using the library
+		panic("use ShowAndGetResult for open single file dialog")
+	}
 	if err := fileOpenDialog.Show(); err != nil {
 		return nil, err
 	}
@@ -75,7 +82,8 @@ func (fileOpenDialog *iFileOpenDialog) GetResult() (string, error) {
 		return "", err
 	}
 	if isMultiselect {
-		return "", errors.New("use GetResults for open multiple files dialog")
+		// We should panic as this error is caused by the developer using the library
+		panic("use GetResults for open multiple files dialog")
 	}
 	return fileOpenDialog.vtbl.getResultString(unsafe.Pointer(fileOpenDialog))
 }
@@ -103,6 +111,14 @@ func (fileOpenDialog *iFileOpenDialog) SetRole(role string) error {
 // This should only be callable when the user asks for a multi select because
 // otherwise they will be given the Dialog interface which does not expose this function.
 func (fileOpenDialog *iFileOpenDialog) GetResults() ([]string, error) {
+	isMultiselect, err := fileOpenDialog.isMultiselect()
+	if err != nil {
+		return nil, err
+	}
+	if !isMultiselect {
+		// We should panic as this error is caused by the developer using the library
+		panic("use GetResult for open single file dialog")
+	}
 	return fileOpenDialog.vtbl.getResultsStrings(unsafe.Pointer(fileOpenDialog))
 }
 
@@ -161,7 +177,7 @@ func (vtbl *iFileOpenDialogVtbl) getResultsStrings(objPtr unsafe.Pointer) ([]str
 		return nil, err
 	}
 	if shellItemArray == nil {
-		return nil, fmt.Errorf("cancelled by user")
+		return nil, ErrorCancelled
 	}
 	defer shellItemArray.vtbl.release(unsafe.Pointer(shellItemArray))
 	count, err := shellItemArray.vtbl.getCount(unsafe.Pointer(shellItemArray))

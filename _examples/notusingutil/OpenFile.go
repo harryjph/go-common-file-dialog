@@ -34,7 +34,7 @@ func main() {
 	go func() {
 		time.Sleep(2 * time.Second)
 		if err := openDialog.SetFileName("hello world"); err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
 	}()
 	if err := openDialog.Show(); err != nil {
