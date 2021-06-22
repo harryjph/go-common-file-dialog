@@ -3,7 +3,6 @@
 package cfd
 
 import (
-	"fmt"
 	"github.com/go-ole/go-ole"
 	"syscall"
 	"unsafe"
@@ -60,7 +59,7 @@ func (vtbl *iShellItemArrayVtbl) getItemAt(objPtr unsafe.Pointer, index uintptr)
 		return "", err
 	}
 	if shellItem == nil {
-		return "", fmt.Errorf("cancelled by user")
+		return "", ErrorCancelled
 	}
 	defer shellItem.vtbl.release(unsafe.Pointer(shellItem))
 	return shellItem.vtbl.getDisplayName(unsafe.Pointer(shellItem))

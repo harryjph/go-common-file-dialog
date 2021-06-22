@@ -28,7 +28,9 @@ func main() {
 		FileName:                "file.txt",
 		DefaultExtension:        "txt",
 	})
-	if err != nil {
+	if err == cfd.ErrorCancelled {
+		log.Fatal("Dialog was cancelled by the user.")
+	} else if err != nil {
 		log.Fatal(err)
 	}
 	log.Printf("Chosen file(s): %s\n", results)

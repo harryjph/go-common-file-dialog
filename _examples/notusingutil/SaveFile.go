@@ -34,7 +34,9 @@ func main() {
 		log.Fatal(err)
 	}
 	result, err := saveDialog.GetResult()
-	if err != nil {
+	if err == cfd.ErrorCancelled {
+		log.Fatal("Dialog was cancelled by the user.")
+	} else if err != nil {
 		log.Fatal(err)
 	}
 	log.Printf("Chosen file: %s\n", result)

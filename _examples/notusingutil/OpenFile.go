@@ -34,14 +34,16 @@ func main() {
 	go func() {
 		time.Sleep(2 * time.Second)
 		if err := openDialog.SetFileName("hello world"); err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
 	}()
 	if err := openDialog.Show(); err != nil {
 		log.Fatal(err)
 	}
 	result, err := openDialog.GetResult()
-	if err != nil {
+	if err == cfd.ErrorCancelled {
+		log.Fatal("Dialog was cancelled by the user.")
+	} else if err != nil {
 		log.Fatal(err)
 	}
 	log.Printf("Chosen file: %s\n", result)
