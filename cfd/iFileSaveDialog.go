@@ -14,7 +14,8 @@ var (
 )
 
 type iFileSaveDialog struct {
-	vtbl *iFileSaveDialogVtbl
+	vtbl               *iFileSaveDialogVtbl
+	parentWindowHandle uintptr
 }
 
 type iFileSaveDialogVtbl struct {
@@ -36,7 +37,11 @@ func newIFileSaveDialog() (*iFileSaveDialog, error) {
 }
 
 func (fileSaveDialog *iFileSaveDialog) Show() error {
-	return fileSaveDialog.vtbl.show(unsafe.Pointer(fileSaveDialog))
+	return fileSaveDialog.vtbl.show(unsafe.Pointer(fileSaveDialog), fileSaveDialog.parentWindowHandle)
+}
+
+func (fileSaveDialog *iFileSaveDialog) SetParentWindowHandle(hwnd uintptr) {
+	fileSaveDialog.parentWindowHandle = hwnd
 }
 
 func (fileSaveDialog *iFileSaveDialog) ShowAndGetResult() (string, error) {

@@ -1,11 +1,10 @@
-// +build windows
-
 package cfdutil
 
 import (
 	"github.com/harry1453/go-common-file-dialog/cfd"
 )
 
+// TODO doc
 func ShowOpenFileDialog(config cfd.DialogConfig) (string, error) {
 	dialog, err := cfd.NewOpenFileDialog(config)
 	if err != nil {
@@ -15,6 +14,7 @@ func ShowOpenFileDialog(config cfd.DialogConfig) (string, error) {
 	return dialog.ShowAndGetResult()
 }
 
+// TODO doc
 func ShowOpenMultipleFilesDialog(config cfd.DialogConfig) ([]string, error) {
 	dialog, err := cfd.NewOpenMultipleFilesDialog(config)
 	if err != nil {
@@ -24,6 +24,7 @@ func ShowOpenMultipleFilesDialog(config cfd.DialogConfig) ([]string, error) {
 	return dialog.ShowAndGetResults()
 }
 
+// TODO doc
 func ShowPickFolderDialog(config cfd.DialogConfig) (string, error) {
 	dialog, err := cfd.NewSelectFolderDialog(config)
 	if err != nil {
@@ -33,6 +34,7 @@ func ShowPickFolderDialog(config cfd.DialogConfig) (string, error) {
 	return dialog.ShowAndGetResult()
 }
 
+// TODO doc
 func ShowSaveFileDialog(config cfd.DialogConfig) (string, error) {
 	dialog, err := cfd.NewSaveFileDialog(config)
 	if err != nil {

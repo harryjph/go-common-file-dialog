@@ -26,11 +26,11 @@ func (vtbl *iUnknownVtbl) release(objPtr unsafe.Pointer) error {
 	return hresultToError(ret)
 }
 
-func (vtbl *iModalWindowVtbl) show(objPtr unsafe.Pointer) error {
+func (vtbl *iModalWindowVtbl) show(objPtr unsafe.Pointer, hwnd uintptr) error {
 	ret, _, _ := syscall.Syscall(vtbl.Show,
-		1, // First argument is owner hWnd, we are just passing null
+		1,
 		uintptr(objPtr),
-		0,
+		hwnd,
 		0)
 	return hresultToError(ret)
 }

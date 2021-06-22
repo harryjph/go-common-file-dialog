@@ -39,6 +39,9 @@ type DialogConfig struct {
 	// For Save File Dialog, this extension will be used whenever a user does not specify an extension.
 	// Ignored by Select Folder Dialog.
 	DefaultExtension string
+	// ParentWindowHandle is the handle (HWND) to the parent window of the dialog.
+	// If left as 0 / nil, the dialog will have no parent window.
+	ParentWindowHandle uintptr
 }
 
 var defaultFilters = []FileFilter{
@@ -83,6 +86,8 @@ func (config *DialogConfig) apply(dialog Dialog) (err error) {
 			return
 		}
 	}
+
+	dialog.SetParentWindowHandle(config.ParentWindowHandle)
 
 	if dialog, ok := dialog.(FileDialog); ok {
 		var fileFilters []FileFilter

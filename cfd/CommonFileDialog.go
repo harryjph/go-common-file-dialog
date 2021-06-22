@@ -7,6 +7,8 @@ type Dialog interface {
 	// Show the dialog to the user.
 	// Blocks until the user has closed the dialog.
 	Show() error
+	// Sets the dialog's parent window. Use 0 to set the dialog to have no parent window.
+	SetParentWindowHandle(hwnd uintptr)
 	// Show the dialog to the user.
 	// Blocks until the user has closed the dialog and returns their selection.
 	// Returns an error if the user cancelled the dialog.
