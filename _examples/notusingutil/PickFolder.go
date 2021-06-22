@@ -17,7 +17,9 @@ func main() {
 		log.Fatal(err)
 	}
 	result, err := pickFolderDialog.GetResult()
-	if err != nil {
+	if err == cfd.ErrorCancelled {
+		log.Fatal("Dialog was cancelled by the user.")
+	} else if err != nil {
 		log.Fatal(err)
 	}
 	log.Printf("Chosen folder: %s\n", result)
