@@ -52,7 +52,7 @@ var defaultFilters = []FileFilter{
 }
 
 func (config *DialogConfig) apply(dialog Dialog) (err error) {
-	if config.Role != "" {
+	if config.Title != "" {
 		err = dialog.SetTitle(config.Title)
 		if err != nil {
 			return
