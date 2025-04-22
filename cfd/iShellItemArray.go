@@ -1,11 +1,13 @@
-//+build windows
+//go:build windows
+// +build windows
 
 package cfd
 
 import (
-	"github.com/go-ole/go-ole"
 	"syscall"
 	"unsafe"
+
+	"github.com/go-ole/go-ole"
 )
 
 const (
