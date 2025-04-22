@@ -2,7 +2,10 @@
 
 package cfd
 
-import "os"
+import (
+  "errors"
+  "os"
+)
 
 type FileFilter struct {
 	// The display name of the filter (That is shown to the user)
@@ -112,6 +115,10 @@ func (config *DialogConfig) apply(dialog Dialog) (err error) {
 		}
 
 		if config.SelectedFileFilterIndex != 0 {
+			if config.SelectedFileFilterIndex > uint(len(fileFilters)) {
+				err = errors.New("selected file filter index out of range")
+				return
+			}
 			err = dialog.SetSelectedFileFilterIndex(config.SelectedFileFilterIndex)
 			if err != nil {
 				return
