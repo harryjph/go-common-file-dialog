@@ -48,6 +48,15 @@ func (vtbl *iFileDialogVtbl) setFileTypes(objPtr unsafe.Pointer, filters []FileF
 			pszSpec: ole.SysAllocString(filter.Pattern),
 		}
 	}
+
+	// Ensure memory is freed after use
+	defer func() {
+		for _, spec := range comDlgFilterSpecs {
+			ole.SysFreeString(spec.pszName)
+			ole.SysFreeString(spec.pszSpec)
+		}
+	}()
+
 	ret, _, _ := syscall.Syscall(vtbl.SetFileTypes,
 		2,
 		uintptr(objPtr),
@@ -145,6 +154,7 @@ func (vtbl *iFileDialogVtbl) setFolder(objPtr unsafe.Pointer, path string) error
 
 func (vtbl *iFileDialogVtbl) setTitle(objPtr unsafe.Pointer, title string) error {
 	titlePtr := ole.SysAllocString(title)
+	defer ole.SysFreeString(titlePtr)
 	ret, _, _ := syscall.Syscall(vtbl.SetTitle,
 		1,
 		uintptr(objPtr),
@@ -198,6 +208,7 @@ func (vtbl *iFileDialogVtbl) setDefaultExtension(objPtr unsafe.Pointer, defaultE
 		defaultExtension = strings.TrimPrefix(defaultExtension, ".")
 	}
 	defaultExtensionPtr := ole.SysAllocString(defaultExtension)
+	defer ole.SysFreeString(defaultExtensionPtr)
 	ret, _, _ := syscall.Syscall(vtbl.SetDefaultExtension,
 		1,
 		uintptr(objPtr),
@@ -208,6 +219,7 @@ func (vtbl *iFileDialogVtbl) setDefaultExtension(objPtr unsafe.Pointer, defaultE
 
 func (vtbl *iFileDialogVtbl) setFileName(objPtr unsafe.Pointer, fileName string) error {
 	fileNamePtr := ole.SysAllocString(fileName)
+	defer ole.SysFreeString(fileNamePtr)
 	ret, _, _ := syscall.Syscall(vtbl.SetFileName,
 		1,
 		uintptr(objPtr),
