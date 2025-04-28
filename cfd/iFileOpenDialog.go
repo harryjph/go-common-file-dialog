@@ -1,12 +1,14 @@
+//go:build windows
 // +build windows
 
 package cfd
 
 import (
-	"github.com/go-ole/go-ole"
-	"github.com/harry1453/go-common-file-dialog/util"
 	"syscall"
 	"unsafe"
+
+	"github.com/go-ole/go-ole"
+	"github.com/harry1453/go-common-file-dialog/util"
 )
 
 var (
@@ -163,11 +165,9 @@ func (fileOpenDialog *iFileOpenDialog) setIsMultiselect(isMultiselect bool) erro
 
 func (vtbl *iFileOpenDialogVtbl) getResults(objPtr unsafe.Pointer) (*iShellItemArray, error) {
 	var shellItemArray *iShellItemArray
-	ret, _, _ := syscall.Syscall(vtbl.GetResults,
-		1,
+	ret, _, _ := syscall.SyscallN(vtbl.GetResults,
 		uintptr(objPtr),
-		uintptr(unsafe.Pointer(&shellItemArray)),
-		0)
+		uintptr(unsafe.Pointer(&shellItemArray)))
 	return shellItemArray, hresultToError(ret)
 }
 

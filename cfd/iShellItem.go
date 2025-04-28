@@ -1,11 +1,13 @@
+//go:build windows
 // +build windows
 
 package cfd
 
 import (
-	"github.com/go-ole/go-ole"
 	"syscall"
 	"unsafe"
+
+	"github.com/go-ole/go-ole"
 )
 
 var (
@@ -40,8 +42,7 @@ func newIShellItem(path string) (*iShellItem, error) {
 
 func (vtbl *iShellItemVtbl) getDisplayName(objPtr unsafe.Pointer) (string, error) {
 	var ptr *uint16
-	ret, _, _ := syscall.Syscall(vtbl.GetDisplayName,
-		2,
+	ret, _, _ := syscall.SyscallN(vtbl.GetDisplayName,
 		uintptr(objPtr),
 		0x80058000, // SIGDN_FILESYSPATH
 		uintptr(unsafe.Pointer(&ptr)))
